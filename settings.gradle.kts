@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Ireland-Statistics"
 include(":app")
+include(":library")
