@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class HttpManager {
+object HttpManager {
 
     private fun _createClient(headers: Map<String, String>?, debug: Boolean): OkHttpClient? {
         val logInterceptor = HttpLoggingInterceptor()
@@ -28,14 +28,6 @@ class HttpManager {
             builder.addInterceptor(logInterceptor)
         }
         return builder.build()
-    }
-
-    private object Singleton {
-        val INSTANCE = HttpManager()
-    }
-
-    fun getInstance(): HttpManager? {
-        return Singleton.INSTANCE
     }
 
     // --------------------------------------------------------------------

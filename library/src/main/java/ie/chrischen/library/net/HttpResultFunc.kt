@@ -1,10 +1,11 @@
 package ie.chrischen.library.net
 
 import ie.chrischen.library.bean.BaseModel
+import ie.chrischen.library.event.BeanEvent
 import ie.chrischen.library.event.IEvent
 import io.reactivex.rxjava3.functions.Function
 
-internal class HttpResultFunction<E : BaseModel?>(private val _id: String) : Function<E, IEvent?> {
+internal class HttpResultFunction<E : BaseModel?>(private val _id: String?) : Function<E, IEvent?> {
     fun call(e: E): IEvent {
         val event: IEvent
         when (e.status) {
