@@ -4,6 +4,8 @@ import android.text.TextUtils
 import android.webkit.URLUtil
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import ie.chrischen.library.bean.BaseModel
+import ie.chrischen.library.bean.abs.IBean
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -44,7 +46,7 @@ object HttpManager {
     fun <T> createService(
         clazz: Class<T>?,
         headers: Map<String, String>?,
-        baseURL: String?,
+        baseURL: String,
         debug: Boolean
     ): T {
         require(!TextUtils.isEmpty(baseURL)) { "HttpManager::createService >>> baseURL can not be empty" }
@@ -54,9 +56,9 @@ object HttpManager {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .baseUrl(baseURL)
-        builder.client(_createClient(headers, debug))
+        _createClient(headers, debug)?.let { builder.client(it) }
         return builder.build().create(clazz)
-    }H
+    }
 
     /**
      * Dispatch the response object [Observable] to the request class
@@ -66,8 +68,8 @@ object HttpManager {
      * @return A Subscription you can cancal your request by it
      * @see {@link cn.maitian.app.library.event.BusProvider}
      */
-    fun <E : BaseModel?> dispatch(id: String?, ob: Observable<E>?): Subscription? {
-        require(!TextUtils.isEmpty(id)) { "HttpManager::dispatch >>> id can not be empty" }
+    fun <T: IBean, E : BaseModel<T>> dispatch(id: String, ob: Observable<E>?) {
+        require(id.isNotEmpty()) { "HttpManager::dispatch >>> id can not be empty" }
         return if (ob == null) {
             throw IllegalArgumentException("HttpManager::dispatch >>> observable can not pass null")
         } else {

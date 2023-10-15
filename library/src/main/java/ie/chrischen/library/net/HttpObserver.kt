@@ -1,6 +1,13 @@
 package ie.chrischen.library.net
 
-internal class HttpObserver(private val _id: String) : Subscriber<IEvent?>() {
+import ie.chrischen.library.event.BaseEvent
+import ie.chrischen.library.event.BusProvider
+import ie.chrischen.library.event.IEvent
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+
+class HttpObserver(private val _id: String) : Observer<IEvent> {
+
     private val _handler: HttpExceptionHandler
 
     // --------------------------------------------------------------------
@@ -9,7 +16,8 @@ internal class HttpObserver(private val _id: String) : Subscriber<IEvent?>() {
         _handler = HttpExceptionHandler()
     }
 
-    fun onStart() {
+    override fun onSubscribe(d: Disposable)
+    {
         var event: IEvent?
         if (_handler.hasAvailableNetwork(_id).also { event = it } != null) {
             BusProvider.post(event)
@@ -17,18 +25,18 @@ internal class HttpObserver(private val _id: String) : Subscriber<IEvent?>() {
         }
     }
 
-    fun onNext(event: IEvent?) {
+    override fun onNext(event: IEvent) {
         if (event != null) {
             BusProvider.post(event)
         }
     }
 
-    fun onCompleted() {
+    override fun onComplete() {
         BusProvider.post(BaseEvent(_id))
         unsubscribe()
     }
 
-    fun onError(e: Throwable?) {
+    override fun onError(e: Throwable) {
         BusProvider.post(_handler.dispatchException(_id, e))
     }
 }
