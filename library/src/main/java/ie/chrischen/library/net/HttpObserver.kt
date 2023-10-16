@@ -8,32 +8,22 @@ import io.reactivex.rxjava3.disposables.Disposable
 
 class HttpObserver(private val _id: String) : Observer<IEvent> {
 
-    private val _handler: HttpExceptionHandler
+    val _handler = HttpExceptionHandler()
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
-    init {
-        _handler = HttpExceptionHandler()
-    }
 
     override fun onSubscribe(d: Disposable)
     {
-        var event: IEvent?
-        if (_handler.hasAvailableNetwork(_id).also { event = it } != null) {
-            BusProvider.post(event)
-            unsubscribe()
-        }
+        BusProvider.post(_handler.hasAvailableNetwork(_id))
     }
 
     override fun onNext(event: IEvent) {
-        if (event != null) {
-            BusProvider.post(event)
-        }
+        BusProvider.post(event)
     }
 
     override fun onComplete() {
         BusProvider.post(BaseEvent(_id))
-        unsubscribe()
     }
 
     override fun onError(e: Throwable) {

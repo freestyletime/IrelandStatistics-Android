@@ -1,6 +1,7 @@
 package ie.chrischen.library
 
 import android.app.Application
+import android.content.Context
 import com.facebook.stetho.Stetho
 
 class LibraryApplication : Application() {

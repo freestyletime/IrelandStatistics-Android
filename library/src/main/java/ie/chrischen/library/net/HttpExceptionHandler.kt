@@ -1,7 +1,9 @@
 package ie.chrischen.library.net
 
 import ie.chrischen.library.LibraryApplication
+import ie.chrischen.library.event.FEvent
 import ie.chrischen.library.event.IEvent
+import ie.chrischen.library.util.NetChecker
 import java.io.EOFException
 import java.io.InterruptedIOException
 import java.net.ConnectException
@@ -11,9 +13,7 @@ import java.net.UnknownHostException
 
 class HttpExceptionHandler {
 
-    fun HttpExceptionHandler() {}
-
-    fun hasAvailableNetwork(id: String?): IEvent {
+    fun hasAvailableNetwork(id: String): IEvent {
         return if (!NetChecker.isAvailable(LibraryApplication.getInstance())) {
             FEvent(id, 0, MaitianErrorHandler.EMS.get(0))
         } else null
