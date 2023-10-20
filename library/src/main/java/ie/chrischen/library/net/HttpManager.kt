@@ -3,6 +3,7 @@ package ie.chrischen.library.net
 import android.text.TextUtils
 import android.webkit.URLUtil
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import ie.chrischen.library.AppContext
 import ie.chrischen.library.bean.BaseModel
 import ie.chrischen.library.bean.abs.IBean
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -10,10 +11,10 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.reactivestreams.Subscription
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 object HttpManager {
@@ -55,6 +56,12 @@ object HttpManager {
         val builder = Retrofit.Builder()
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
+            .client(OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build())
             .baseUrl(baseURL)
         _createClient(headers, debug)?.let { builder.client(it) }
         return builder.build().create(clazz)

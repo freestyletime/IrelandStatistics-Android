@@ -2,6 +2,7 @@ package ie.chrischen.library
 
 import android.app.Application
 import android.content.Context
+import android.content.ContextWrapper
 import com.facebook.stetho.Stetho
 
 class LibraryApplication : Application() {
@@ -14,4 +15,11 @@ class LibraryApplication : Application() {
             .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
             .build())
     }
+
+    companion object {
+        @JvmStatic
+        lateinit var INSTANCE: LibraryApplication
+    }
 }
+
+object AppContext : ContextWrapper(LibraryApplication.INSTANCE)

@@ -1,6 +1,7 @@
 package ie.chrischen.library.net
 
-import ie.chrischen.library.LibraryApplication
+import com.squareup.moshi.JsonDataException
+import ie.chrischen.library.AppContext
 import ie.chrischen.library.event.FEvent
 import ie.chrischen.library.event.IEvent
 import ie.chrischen.library.util.NetChecker
@@ -14,7 +15,7 @@ import java.net.UnknownHostException
 class HttpExceptionHandler {
 
     fun hasAvailableNetwork(id: String): IEvent {
-        return if (!NetChecker.isAvailable(LibraryApplication.getInstance())) {
+        return if (!NetChecker.isAvailable(AppContext)) {
             FEvent(id, 0, MaitianErrorHandler.EMS.get(0))
         } else null
     }
@@ -48,7 +49,7 @@ class HttpExceptionHandler {
                     event = FEvent(id, 4, MaitianErrorHandler.EMS.get(4))
                 }
             }
-        } else if (e is com.google.gson.JsonSyntaxException) {
+        } else if (e is JsonDataException) {
             event = FEvent(id, 10, MaitianErrorHandler.EMS.get(10))
         } else if (e is UnknownHostException) {
             event = FEvent(id, 8, MaitianErrorHandler.EMS.get(8))
