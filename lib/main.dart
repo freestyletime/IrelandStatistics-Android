@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:irelandstatistics/pages/Splash.dart';
+import 'package:irelandstatistics/ServiceLocator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irelandstatistics/pages/SplashPage.dart';
 
 void main() {
+  initLocator();
   runApp(const IrelandStatistics());
 }
 
@@ -11,19 +14,33 @@ class IrelandStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      title: 'IrelandStatistics',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.blueAccent,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
-        useMaterial3: true,
-      ),
-      routes: <String, WidgetBuilder>{
-
-      },
-      home: const SplashPage(),
+    return BlocProvider(
+      create: (_) => ThemeCubit(),
+      child: SplashPage(),
     );
+  }
+}
+
+class ThemeCubit extends Cubit<ThemeData> {
+
+  ThemeCubit() : super(_lightTheme);
+
+  static final _lightTheme = ThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
+    ),
+    brightness: Brightness.light,
+  );
+
+  static final _darkTheme = ThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      foregroundColor: Colors.black,
+    ),
+    brightness: Brightness.dark,
+  );
+
+  void toggleTheme() {
+    emit(state.brightness == Brightness.dark ? _lightTheme : _darkTheme);
   }
 }
 
