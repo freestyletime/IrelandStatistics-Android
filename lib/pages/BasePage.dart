@@ -9,7 +9,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   Widget getBody(BuildContext context);
   // floating action button
   Widget? getFloatingActionButton(BuildContext context);
-
+  // facade pattern
   var service = locator<Services>();
 
   void showSnackBar(BuildContext context, String msg) {

@@ -11,6 +11,7 @@ class SplashPage extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeData>(
         builder: (_, theme) {
           return MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: 'IrelandStatistics',
               theme: theme,
               home: const HomePage()

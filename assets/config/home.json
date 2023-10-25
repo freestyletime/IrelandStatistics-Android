@@ -1,0 +1,30 @@
+[
+  {
+    "channel_id": "0",
+    "channel_name": "Work Permit",
+    "channel_type": "Department of Enterprise, Trade and employment",
+    "sub_channel_years": [2023, 2022],
+    "sub_channels": [
+      {
+        "sub_channel_id": "0",
+        "sub_channel_name": "Permits by nationality",
+        "sub_channel_type": "Department of Enterprise, Trade and employment"
+      },
+      {
+        "sub_channel_id": "1",
+        "sub_channel_name": "Permits issued to companies",
+        "sub_channel_type": "Department of Enterprise, Trade and employment"
+      },
+      {
+        "sub_channel_id": "2",
+        "sub_channel_name": "Permits by county",
+        "sub_channel_type": "Department of Enterprise, Trade and employment"
+      },
+      {
+        "sub_channel_id": "3",
+        "sub_channel_name": "Permits by sector",
+        "sub_channel_type": "Department of Enterprise, Trade and employment"
+      }
+    ]
+  }
+]
