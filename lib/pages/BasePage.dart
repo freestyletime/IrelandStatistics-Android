@@ -3,6 +3,7 @@ import 'package:irelandstatistics/ServiceLocator.dart';
 import 'package:irelandstatistics/Services.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T> {
+
   // title
   AppBar getAppBar(BuildContext context);
   // content
@@ -32,15 +33,6 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
     return Scaffold(
       appBar: getAppBar(context),
       body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.blueGrey,
-                  Colors.black,
-                ]),
-          ),
           child: getBody(context)),
           floatingActionButton: getFloatingActionButton(context),
     );

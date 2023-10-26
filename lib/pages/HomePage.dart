@@ -19,20 +19,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
+  var theme = Brightness.light;
   // home data from local json configuration file
   late List<Channel> channels;
 
-  Future<String> _initChannelData() async {
+  Future<void> _initChannelData() async {
     channels = <Channel>[];
-    var value = await rootBundle.loadString("assets/config/home.json");
+    var value = await rootBundle.loadString('assets/config/home.json');
     setState(() {
       List<dynamic> data = json.decode(value);
-
       for (var tmp in data) {
         channels.add(Channel.fromJson(tmp));
       }
     });
-    return "success";
   }
 
   @override
@@ -52,28 +51,43 @@ class _HomePageState extends BasePageState<HomePage> {
   @override
   Widget getBody(BuildContext context) {
     return GridView.count(
-      primary: false,
-      padding: const EdgeInsets.all(20),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      crossAxisCount: 2,
-      children: channels.map((Channel c) {
-        return Container(
-          padding: const EdgeInsets.all(8),
-          color: Colors.teal[100],
-          child: Text(c.channelName ?? '')
-        );
-      }).toList()
-    );
+        primary: false,
+        padding: const EdgeInsets.all(20),
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 15,
+        crossAxisCount: 2,
+        children: channels.map((Channel c) {
+          return InkWell(
+              onTap: () {
+                switch (c.channelId) {
+                  case "0":
+                    // TODO work permit
+                    showSnackBar(context, 'work permit tap!');
+                    break;
+                }
+              },
+              child: Container(
+                  color: theme == Brightness.light
+                      ? Colors.teal[100]
+                      : Colors.blueGrey,
+                  child: Center(
+                    child: Text(c.channelName ?? '',
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  )));
+        }).toList());
   }
 
   @override
   Widget? getFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
-      child: const Icon(Icons.brightness_6),
+      child: theme == Brightness.light? const Icon(Icons.brightness_4_outlined) : const Icon(Icons.brightness_4_rounded),
       onPressed: () {
-        context.read<ThemeCubit>().toggleTheme();
-        showSnackBar(context, 'theme change!');
+        setState(() {
+          theme = context.read<ThemeCubit>().toggleTheme();
+        });
       },
     );
   }
