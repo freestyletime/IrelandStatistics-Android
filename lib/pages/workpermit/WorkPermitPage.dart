@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 
-import '../Constants.dart';
+import '../../Constants.dart';
 
 class WorkPermitPage extends StatefulWidget {
   const WorkPermitPage({super.key});

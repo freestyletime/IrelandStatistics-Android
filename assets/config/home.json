@@ -26,11 +26,5 @@
         "sub_channel_type": "Department of Enterprise, Trade and employment"
       }
     ]
-  },
-  {
-    "channel_id": "1",
-    "channel_name": "Population",
-    "channel_type": "Department of Enterprise, Trade and employment",
-    "sub_channel_years": []
   }
 ]
