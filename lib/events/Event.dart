@@ -7,10 +7,10 @@ class SEvent extends IEvent {
   SEvent(super.id);
 }
 
-class ModelEvent<T extends IBean> extends IEvent{
-  T t;
+class BeanEvent<T extends IBean> extends IEvent{
+  List<T> ts;
 
-  ModelEvent(super.id, this.t);
+  BeanEvent(super.id, this.ts);
 }
 
 class FEvent extends IEvent {
