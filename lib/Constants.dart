@@ -9,6 +9,7 @@ class Strings {
   static const String page_title_work_permit = 'Work Permit';
 
   static const String msg_not_connection = 'Please check the network!';
+  static const String msg_request_error = 'Something wrong while request.';
 }
 
 class URLConstants {

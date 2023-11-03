@@ -1,2 +1,4 @@
 // constraint for all models
-class IBean {}
+abstract class IBean {
+  fromJson(Map<String, dynamic> json);
+}

@@ -10,4 +10,9 @@ class Id extends IBean{
     timestamp = json['timestamp'];
     date = json['date'];
   }
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    return Id.fromJson(json);
+  }
 }

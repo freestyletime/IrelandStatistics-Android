@@ -12,4 +12,9 @@ class SubChannel implements IBean{
     subChannelName = json['sub_channel_name'];
     subChannelType = json['sub_channel_type'];
   }
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    return SubChannel.fromJson(json);
+  }
 }

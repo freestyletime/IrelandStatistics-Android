@@ -25,4 +25,9 @@ class PermitsCounty extends IBean{
     refused = json['refused'];
     withdrawn = json['withdrawn'];
   }
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    return PermitsCounty.fromJson(json);
+  }
 }

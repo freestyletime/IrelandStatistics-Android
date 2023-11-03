@@ -18,4 +18,9 @@ class PermitsSector extends IBean{
     count = json['count'];
     monthCount = json['monthCount'].cast<int>();
   }
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    return PermitsSector.fromJson(json);
+  }
 }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
@@ -16,10 +19,16 @@ void _get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? m
     NetWork.isConnected().then((isConnected) => {
       if(isConnected) {
         if (t == null) {
-          NetWork.get(url, data: map)
-          // TODO
+          //TODO
         } else {
-          
+          NetWork.get(url, data: map)
+              .then((value) {
+                Constants.eventBus.fire(BeanEvent<T>(id, json.decode(value.data), t));
+              })
+              .onError((error, stackTrace) => null)
+              .whenComplete(() => Future.delayed(const Duration(milliseconds: delay), () {}).then((_) {
+            Constants.eventBus.fire(CEvent(id));
+          }))
         }
       } else {
         Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))
@@ -31,13 +40,13 @@ void _get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? m
 
 class API$WorkPermit$Company{
   static const String united = '/company';
-  getAllCompanyDataByYear(String id, String year, int page, int pageSize) {
+  getAllCompanyDataByYear(String id, String year, {int page = 0, int pageSize = 20}) {
     String url = '$united/$year';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
     _get(id, url, t: PermitsCompany(), map: data);
   }
 
-  getCompanyDataByYear(String id, String year, String company, int page, int pageSize) {
+  getCompanyDataByYear(String id, String year, String company, {int page = 0, int pageSize = 20}) {
     String url = '$united/$year/$company';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
     _get(id, url, t: PermitsCompany(), map: data);
@@ -71,7 +80,7 @@ class API$WorkPermit$County{
 }
 
 class API$WorkPermit$Sector{
-  static const String united = '/county';
+  static const String united = '/sector';
   getAllSectorDataByYear(String id, String year) {
     String url = '$united/$year';
     _get(id, url, t: PermitsSector());

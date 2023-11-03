@@ -27,4 +27,9 @@ class Channel extends IBean{
       });
     }
   }
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    return Channel.fromJson(json);
+  }
 }

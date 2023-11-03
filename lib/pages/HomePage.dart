@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 
 import '../Constants.dart';
@@ -61,8 +62,7 @@ class _HomePageState extends BasePageState<HomePage> {
               onTap: () {
                 switch (c.channelId) {
                   case "0":
-                    // TODO work permit
-                    showSnackBar(context, 'work permit tap!');
+                    service.getApiWorkPermitCompany().getCompanyDataByYear("HomePage" + hashCode.toString(), "2022", "Deloitte");
                     break;
                 }
               },
@@ -90,5 +90,10 @@ class _HomePageState extends BasePageState<HomePage> {
         });
       },
     );
+  }
+
+  @override
+  void success<E extends IBean>(String id, List<E> ts) {
+    showSnackBar(id);
   }
 }

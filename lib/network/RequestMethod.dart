@@ -39,10 +39,14 @@ class NetWork {
   }
 
   static Future<Response> get(String url, {Map<String, dynamic>? data}) async {
-    Response res = await _getDio().get<List<int>>(
-      url,
-      queryParameters: data,
-    );
-    return res;
+    try {
+      Response res = await _getDio().get<List<int>>(
+        url,
+        queryParameters: data,
+      );
+      return res;
+    } catch(e) {
+      rethrow;
+    }
   }
 }
