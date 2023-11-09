@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
@@ -12,30 +11,14 @@ import '../../models/IBean.dart';
 import '../../models/workpermit/PermitsCompany.dart';
 
 void _get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? map}) {
-  const delay = 100;
   Constants.eventBus.fire(SEvent(id));
-
-  Future.delayed(const Duration(milliseconds: delay)).then((_) => {
-    NetWork.isConnected().then((isConnected) => {
-      if(isConnected) {
-        if (t == null) {
-          //TODO
-        } else {
-          NetWork.get(url, data: map)
-              .then((value) {
-                Constants.eventBus.fire(BeanEvent<T>(id, json.decode(value.data), t));
-              })
-              .onError((error, stackTrace) => null)
-              .whenComplete(() => Future.delayed(const Duration(milliseconds: delay), () {}).then((_) {
-            Constants.eventBus.fire(CEvent(id));
-          }))
-        }
-      } else {
-        Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))
-      }
-    })
+  NetWork.isConnected().then((isConnected) => {
+    if(isConnected) {
+      NetWork.get(id, url, t: t, data: map)
+    } else {
+      Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))
+    }
   });
-
 }
 
 class API$WorkPermit$Company{

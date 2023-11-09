@@ -8,15 +8,14 @@ class SEvent extends IEvent {
 }
 
 class BeanEvent<T extends IBean> extends IEvent{
-  List<T> ts = List.empty();
+  List<T> ts = [];
 
-  BeanEvent(super.id, List<dynamic> json, T t) {
+  BeanEvent(super.id, List<dynamic>? json, T t) {
     fromJson(json, t);
   }
 
-  fromJson(List<dynamic> json, T t) {
-    ts = List.empty();
-    for (var v in json) {
+  fromJson(List<dynamic>? json, T t) {
+    for (var v in json!) {
       ts.add(t.fromJson(v));
     }
   }

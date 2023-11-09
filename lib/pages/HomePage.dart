@@ -62,7 +62,7 @@ class _HomePageState extends BasePageState<HomePage> {
               onTap: () {
                 switch (c.channelId) {
                   case "0":
-                    service.getApiWorkPermitCompany().getCompanyDataByYear("HomePage" + hashCode.toString(), "2022", "Deloitte");
+
                     break;
                 }
               },
@@ -94,6 +94,5 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-    showSnackBar(id);
   }
 }
