@@ -17,22 +17,21 @@ class WorkPermitListView extends StatelessWidget {
 
     final index = position ~/ 2;
     SubChannel data = datas[index];
+
     Widget getText(String str) {
-      return Text(str, style: const TextStyle(fontSize: 15));
+      return Text(str, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold));
     }
 
     return Card(
       elevation: 5.0,
       child: InkWell(
         child: Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                getText('${data.subChannelName}'),
-                const Divider(),
-                getText('${data.subChannelType}'),
+                getText('${data.subChannelName}')
               ],
             )),
         onTap: () {

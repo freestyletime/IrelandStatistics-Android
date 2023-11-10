@@ -7,12 +7,14 @@ import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitPage.dart';
 
 import '../Constants.dart';
 import '../main.dart';
 import '../models/local/Channel.dart';
 
 class HomePage extends StatefulWidget {
+
   const HomePage({super.key});
 
   @override
@@ -20,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
-  var theme = Brightness.light;
+
   // home data from local json configuration file
   late List<Channel> channels;
 
@@ -62,7 +64,10 @@ class _HomePageState extends BasePageState<HomePage> {
               onTap: () {
                 switch (c.channelId) {
                   case "0":
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => WorkPermitPage(data: c.subChannels!)),
+                    );
                     break;
                 }
               },
@@ -81,9 +86,11 @@ class _HomePageState extends BasePageState<HomePage> {
   }
 
   @override
-  Widget? getFloatingActionButton(BuildContext context) {
+  FloatingActionButton? getFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
-      child: theme == Brightness.light? const Icon(Icons.brightness_4_outlined) : const Icon(Icons.brightness_4_rounded),
+      child: theme == Brightness.light ? const Icon(
+          Icons.brightness_4_outlined) : const Icon(
+          Icons.brightness_4_rounded),
       onPressed: () {
         setState(() {
           theme = context.read<ThemeCubit>().toggleTheme();

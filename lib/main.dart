@@ -15,7 +15,7 @@ class IrelandStatistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ThemeCubit(),
-      child: SplashPage(),
+      child: const SplashPage(),
     );
   }
 }

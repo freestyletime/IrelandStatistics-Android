@@ -10,12 +10,17 @@ import '../models/IBean.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T> {
 
+  // theme
+  var theme = Brightness.light;
+
   // title
   AppBar getAppBar(BuildContext context);
+
   // content
   Widget getBody(BuildContext context);
-  // floating action button
-  Widget? getFloatingActionButton(BuildContext context);
+
+  // action button
+  FloatingActionButton? getFloatingActionButton(BuildContext context);
 
   void success<E extends IBean>(String id, List<E> ts);
 
@@ -28,7 +33,8 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   var service = locator<Services>();
 
   void showSnackBar(String msg) {
-    var snackBar = SnackBar(content: Text(msg), duration: const Duration(seconds: 1));
+    var snackBar = SnackBar(
+        content: Text(msg), duration: const Duration(seconds: 1));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -75,7 +81,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
       appBar: getAppBar(context),
       body: Container(
           child: getBody(context)),
-          floatingActionButton: getFloatingActionButton(context),
+      floatingActionButton: getFloatingActionButton(context),
     );
   }
 }

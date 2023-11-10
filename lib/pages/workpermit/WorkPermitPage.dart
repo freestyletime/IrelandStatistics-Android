@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/material/app_bar.dart';
+import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
@@ -44,6 +45,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   void _result(String val) {
     switch(val){
       case '0':
+        service.getApiWorkPermitNationality().getAllNationalityDataByYear('cc' + hashCode.toString(), '2020');
         break;
       case '1':
         break;
@@ -56,13 +58,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void initState() {
+    _searchKey = '';
+    _data.value = widget.data;
     _controller = CallbackController(context, result: _result);
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 
   @override
@@ -75,6 +74,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   Widget getBody(BuildContext context) {
+
     return ValueListenableBuilder<List<SubChannel>>(
         valueListenable: _data,
         builder: (context, data, _) {
@@ -83,19 +83,23 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               hint: Strings.hint_work_permit_search,
               callback: _searchCallback);
 
+          if (data.isEmpty) {
+            return const Center(child: Text(Strings.hint_data_empty,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)));
+          }
 
           return CustomScrollView(
-            physics: ScrollPhysics(),
+            physics: const ScrollPhysics(),
             slivers: <Widget>[
               SliverToBoxAdapter(child: search),
-              WorkPermitListView(data, callback: _controller.itemClick)
+              WorkPermitListView(data, callback: _controller.itemClick, isListView: false)
             ],
           );
         });
   }
 
   @override
-  Widget? getFloatingActionButton(BuildContext context) {
+  FloatingActionButton? getFloatingActionButton(BuildContext context) {
     return null;
   }
 

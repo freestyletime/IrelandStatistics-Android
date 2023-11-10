@@ -7,4 +7,7 @@ class Services {
   // void sendEmail(String email) => launchUrl(Uri.parse('mailto:$email'));
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   API$WorkPermit$Company getApiWorkPermitCompany() => API$WorkPermit$Company();
+  API$WorkPermit$Nationality getApiWorkPermitNationality() => API$WorkPermit$Nationality();
+  API$WorkPermit$County getApiWorkPermitCounty() => API$WorkPermit$County();
+  API$WorkPermit$Sector getApiWorkPermitSector() => API$WorkPermit$Sector();
 }

@@ -8,7 +8,8 @@ class Strings {
   static const String page_title_home = 'Home';
   static const String page_title_work_permit = 'Work Permit';
 
-  static const String hint_work_permit_search = "find your item";
+  static const String hint_work_permit_search = "Search your item";
+  static const String hint_data_empty = "Out of data";
 
   static const String msg_400 = 'Something wrong with the request parameters.';
   static const String msg_403 = 'Current user has not permission to access.';

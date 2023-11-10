@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -11,8 +10,8 @@ import '../events/Event.dart';
 import '../models/IBean.dart';
 
 class NetWork {
-
   static Dio dio = _getDio();
+
   static Dio _getDio() {
     Dio dio = Dio();
 
@@ -44,9 +43,9 @@ class NetWork {
     return connectivityResult != ConnectivityResult.none;
   }
 
-  static void errorHandle(String id, int? statusCode) {
+  static String errorHandle(String id, int? statusCode) {
     String error = Strings.msg_default;
-    switch(statusCode){
+    switch (statusCode) {
       case HttpStatus.badRequest:
         error = Strings.msg_400;
         break;
@@ -57,23 +56,38 @@ class NetWork {
         error = Strings.msg_404;
         break;
     }
-    Constants.eventBus.fire(FEvent(id, error));
+    return error;
   }
 
-  static void get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? data}) async {
-    try {
-      dio.get<List<dynamic>>(
-        url,
-        queryParameters: data,
-      ).then((res) => {
-        if(res.statusCode == HttpStatus.ok) {
-          if(t != null) Constants.eventBus.fire(BeanEvent<T>(id, res.data, t))
-        } else {
-          errorHandle(id, res.statusCode)
-        }
-      });
-    } catch(e) {
-      rethrow;
-    }
+  static void get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? data}) {
+    Constants.eventBus.fire(SEvent(id));
+    NetWork.isConnected().then((isConnected) => {
+          if (isConnected)
+            {
+              dio
+                  .get<List<dynamic>>(
+                    url,
+                    queryParameters: data,
+                  )
+                  .then((res) => {
+                        if (res.statusCode == HttpStatus.ok)
+                          {
+                            if (t != null) Constants.eventBus.fire(BeanEvent<T>(id, res.data, t))
+                          }
+                        else
+                          {
+                            throw HttpException(errorHandle(id, res.statusCode))
+                          }
+                      })
+                  .catchError((e) => {
+                    if(e is HttpException) Constants.eventBus.fire(FEvent(id, e.message))
+              })
+                  .whenComplete(() => Constants.eventBus.fire(CEvent(id)))
+            }
+          else
+            {
+              Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))
+            }
+        });
   }
 }

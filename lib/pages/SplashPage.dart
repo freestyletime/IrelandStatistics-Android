@@ -6,6 +6,8 @@ import 'package:irelandstatistics/pages/HomePage.dart';
 import '../main.dart';
 class SplashPage extends StatelessWidget {
 
+  const SplashPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeData>(
