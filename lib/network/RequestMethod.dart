@@ -16,8 +16,11 @@ class NetWork {
     Dio dio = Dio();
 
     const Map<String, dynamic> headers = {
-      'content-type': 'application/json',
-      'accept': 'application/json'
+      'content-type': 'application/json;charset=utf-8',
+      'accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
     };
 
     dio.options = BaseOptions(
@@ -76,12 +79,9 @@ class NetWork {
                           }
                         else
                           {
-                            throw HttpException(errorHandle(id, res.statusCode))
+                            Constants.eventBus.fire(FEvent(id, errorHandle(id, res.statusCode)))
                           }
                       })
-                  .catchError((e) => {
-                    if(e is HttpException) Constants.eventBus.fire(FEvent(id, e.message))
-              })
                   .whenComplete(() => Constants.eventBus.fire(CEvent(id)))
             }
           else

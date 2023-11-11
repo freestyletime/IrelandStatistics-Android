@@ -3,7 +3,7 @@
     "channel_id": "0",
     "channel_name": "Work Permit",
     "channel_type": "Department of Enterprise, Trade and employment",
-    "sub_channel_years": [2023, 2022],
+    "sub_channel_years": [2023, 2022, 2021, 2020],
     "sub_channels": [
       {
         "sub_channel_id": "0",

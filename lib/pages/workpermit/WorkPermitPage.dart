@@ -6,7 +6,8 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
-import '../../models/local/SubChannel.dart';
+import '../../models/config/SubChannel.dart';
+import '../../widgets/EmptyCenterText.dart';
 import '../../widgets/SearchBox.dart';
 import '../CallbackController.dart';
 
@@ -83,10 +84,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               hint: Strings.hint_work_permit_search,
               callback: _searchCallback);
 
-          if (data.isEmpty) {
-            return const Center(child: Text(Strings.hint_data_empty,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)));
-          }
+          if (data.isEmpty)  if (data.isEmpty) return const EmptyCenterText();
 
           return CustomScrollView(
             physics: const ScrollPhysics(),

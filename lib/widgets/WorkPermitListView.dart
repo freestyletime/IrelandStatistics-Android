@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:irelandstatistics/models/local/SubChannel.dart';
+
+import '../models/config/SubChannel.dart';
 
 class WorkPermitListView extends StatelessWidget {
   final List<SubChannel> data;

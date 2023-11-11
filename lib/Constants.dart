@@ -17,6 +17,9 @@ class Strings {
   static const String msg_default = 'unknown happened';
   static const String msg_not_connection = 'Please check the network!';
   static const String msg_request_error = 'Something wrong while request.';
+
+
+  static const String tag_home_page_work_permit = '0';
 }
 
 class URLConstants {

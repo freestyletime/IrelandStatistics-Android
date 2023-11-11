@@ -1,9 +1,18 @@
+
 import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 import 'package:irelandstatistics/network/RequestMethod.dart';
 
+import '../../models/config/Channel.dart';
 import '../../models/workpermit/PermitsCompany.dart';
+
+class API$WorkPermit$Config{
+  getUIConfig(String id) {
+    String url = '/config';
+    NetWork.get(id, url, t: Channel());
+  }
+}
 
 class API$WorkPermit$Company{
   static const String united = '/company';

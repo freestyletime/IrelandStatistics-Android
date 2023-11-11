@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:irelandstatistics/models/local/SubChannel.dart';
 
 import '../models/IBean.dart';
+import '../models/config/SubChannel.dart';
 
 class CallbackController {
   final BuildContext context;
