@@ -20,6 +20,11 @@ class Strings {
 
 
   static const String tag_home_page_work_permit = '0';
+
+  static const String tag_work_permit_page_nationality = '0';
+  static const String tag_work_permit_page_companies = '1';
+  static const String tag_work_permit_page_county = '2';
+  static const String tag_work_permit_page_sector = '3';
 }
 
 class URLConstants {

@@ -27,17 +27,6 @@ class _HomePageState extends BasePageState<HomePage> {
 
   final _data = ValueNotifier<List<Channel>>([]);
 
-  // _initChannelData() {
-    // channels = <Channel>[];
-    // var value = await rootBundle.loadString('assets/config/home.json');
-    // setState(() {
-    //   List<dynamic> data = json.decode(value);
-    //   for (var tmp in data) {
-    //     channels.add(Channel.fromJson(tmp));
-    //   }
-    // });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -72,7 +61,7 @@ class _HomePageState extends BasePageState<HomePage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
-                                    WorkPermitPage(data: c.subChannels!)),
+                                    WorkPermitPage(data: c.subChannels, years: c.subChannelYears)),
                           );
                           break;
                       }
@@ -109,9 +98,11 @@ class _HomePageState extends BasePageState<HomePage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (HomePage.tag + hashCode.toString() == id) {
+      var tmp = <Channel>[];
       for (var i in ts) {
-        if (i is Channel) _data.value.add(i);
+        if (i is Channel) tmp.add(i);
       }
+      _data.value = tmp;
     }
   }
 }
