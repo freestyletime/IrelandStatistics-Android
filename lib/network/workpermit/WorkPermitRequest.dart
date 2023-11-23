@@ -1,4 +1,5 @@
 
+import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
@@ -16,13 +17,13 @@ class API$WorkPermit$Config{
 
 class API$WorkPermit$Company{
   static const String united = '/company';
-  getAllCompanyDataByYear(String id, String year, {int page = 0, int pageSize = 20}) {
+  getAllCompanyDataByYear(String id, String year, {int page = Constants.pageFrom, int pageSize = Constants.pageSize}) {
     String url = '$united/$year';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
     NetWork.get(id, url, t: PermitsCompany(), data: data);
   }
 
-  getCompanyDataByYear(String id, String year, String company, {int page = 0, int pageSize = 20}) {
+  getCompanyDataByYear(String id, String year, String company, {int page = Constants.pageFrom, int pageSize = Constants.pageSize}) {
     String url = '$united/$year/$company';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
     NetWork.get(id, url, t: PermitsCompany(), data: data);

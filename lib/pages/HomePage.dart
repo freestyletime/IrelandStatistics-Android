@@ -13,6 +13,7 @@ import '../Constants.dart';
 import '../main.dart';
 import '../models/config/Channel.dart';
 import '../widgets/EmptyCenterText.dart';
+import '../widgets/SliverAppBarDelegate.dart';
 
 class HomePage extends StatefulWidget {
   static const String tag = 'home-page';
@@ -24,8 +25,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
-
   final _data = ValueNotifier<List<Channel>>([]);
+
+  SliverPersistentHeader _makeHeader() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: SliverAppBarDelegate(
+        minHeight: 35.0,
+        maxHeight: 260.0,
+        child: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/header.jpeg"),
+                fit: BoxFit.cover,
+              ),
+            )),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -34,9 +52,9 @@ class _HomePageState extends BasePageState<HomePage> {
   }
 
   @override
-  AppBar getAppBar(BuildContext context) {
-    return AppBar(
-        centerTitle: true, title: const Text(Strings.page_title_home));
+  AppBar? getAppBar(BuildContext context) {
+    return null;
+    // AppBar(centerTitle: true, title: const Text(Strings.page_title_home));
   }
 
   @override
@@ -46,38 +64,44 @@ class _HomePageState extends BasePageState<HomePage> {
         builder: (context, data, _) {
           if (data.isEmpty) return const EmptyCenterText();
 
-          return GridView.count(
-              primary: false,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-              crossAxisCount: 2,
-              children: data.map((Channel c) {
-                return InkWell(
-                    onTap: () {
-                      switch (c.channelId) {
-                        case Strings.tag_home_page_work_permit:
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    WorkPermitPage(data: c.subChannels, years: c.subChannelYears)),
-                          );
-                          break;
-                      }
-                    },
-                    child: Container(
-                        color: theme == Brightness.light
-                            ? Colors.teal[100]
-                            : Colors.blueGrey,
-                        child: Center(
-                          child: Text(c.channelName ?? '',
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        )));
-              }).toList());
+          return CustomScrollView(slivers: <Widget>[
+            _makeHeader(),
+          SliverPadding(
+          padding: const EdgeInsets.all(20),
+          sliver:
+            SliverGrid.count(
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                crossAxisCount: 2,
+
+                children: data.map((Channel c) {
+                  return InkWell(
+                      onTap: () {
+                        switch (c.channelId) {
+                          case Strings.tag_home_page_work_permit:
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => WorkPermitPage(
+                                      data: c.subChannels,
+                                      years: c.subChannelYears)),
+                            );
+                            break;
+                        }
+                      },
+                      child: Container(
+                          color: theme == Brightness.light
+                              ? Colors.teal[100]
+                              : Colors.blueGrey,
+                          child: Center(
+                            child: Text(c.channelName ?? '',
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          )));
+                }).toList())
+          )]);
         });
   }
 

@@ -1,27 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter/src/material/floating_action_button.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 
-import '../../Constants.dart';
-
-class WorkPermitSubPage extends StatefulWidget {
-  static const String tag = 'work-permit-sub-page';
-
-  final int page = Constants.pageFrom;
-  final int pageSize = Constants.pageSize;
-  final bool isPaginating;
-  final List<int>? years;
-  final List<IBean>? data;
-
-  const WorkPermitSubPage({super.key, required this.years, required this.data, this.isPaginating = false});
+class WorkPermitNationalityPage extends StatefulWidget {
+  const WorkPermitNationalityPage({super.key});
 
   @override
-  State<WorkPermitSubPage> createState() => _WorkPermitSubPageState();
+  State<WorkPermitNationalityPage> createState() => _WorkPermitNationalityPageState();
 }
 
-class _WorkPermitSubPageState extends BasePageState<WorkPermitSubPage> {
+class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalityPage> {
 
   @override
   AppBar? getAppBar(BuildContext context) {

@@ -7,7 +7,8 @@ class WorkPermitListView extends StatelessWidget {
   final Function callback;
   final bool isListView;
 
-  const WorkPermitListView(this.data, {super.key, required this.callback, this.isListView = true});
+  const WorkPermitListView(this.data,
+      {super.key, required this.callback, this.isListView = true});
 
   void _onItemClick(SubChannel data) {
     callback(data);
@@ -20,26 +21,27 @@ class WorkPermitListView extends StatelessWidget {
     SubChannel data = datas[index];
 
     Widget getText(String str) {
-      return Text(str, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold));
+      return Text(str,
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold));
     }
 
-    return Card(
-      elevation: 5.0,
-      child: InkWell(
-        child: Container(
-            padding: const EdgeInsets.all(25),
-            child: Column(
+    return Container(
+        padding: const EdgeInsets.all(5),
+        child: Card(
+          elevation: 5.0,
+          child: InkWell(
+            child: Container(
+                padding: const EdgeInsets.all(15),
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                getText('${data.subChannelName}')
-              ],
+              children: [getText('${data.subChannelName}')],
             )),
-        onTap: () {
-          _onItemClick(data);
-        },
-      ),
-    );
+            onTap: () {
+              _onItemClick(data);
+            },
+          ),
+        ));
   }
 
   @override
@@ -51,7 +53,7 @@ class WorkPermitListView extends StatelessWidget {
     }
     return SliverList(
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          return _renderRow(index, data);
-        }, childCount: data.length * 2));
+      return _renderRow(index, data);
+    }, childCount: data.length * 2));
   }
 }

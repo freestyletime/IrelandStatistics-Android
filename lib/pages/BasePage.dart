@@ -14,7 +14,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   var theme = Brightness.light;
 
   // title
-  AppBar getAppBar(BuildContext context);
+  AppBar? getAppBar(BuildContext context);
 
   // content
   Widget getBody(BuildContext context);

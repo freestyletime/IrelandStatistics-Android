@@ -2,11 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitCompanyPage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitSubPage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
 import '../../models/config/SubChannel.dart';
+import '../../models/workpermit/PermitsNationality.dart';
 import '../../widgets/EmptyCenterText.dart';
 import '../../widgets/SearchBox.dart';
 import '../CallbackController.dart';
@@ -46,24 +52,18 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   void _result(String val) {
     switch (val) {
       case Strings.tag_work_permit_page_nationality:
-        service
-            .getApiWorkPermitNationality()
-            .getAllNationalityDataByYear(WorkPermitPage.tag + hashCode.toString(), widget.years![0].toString());
         break;
       case Strings.tag_work_permit_page_companies:
-        service
-            .getApiWorkPermitCompany()
-            .getAllCompanyDataByYear(WorkPermitPage.tag + hashCode.toString(), widget.years![0].toString());
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) =>
+                  WorkPermitCompanyPage(years: widget.years)),
+        );
         break;
       case Strings.tag_work_permit_page_county:
-        service
-            .getApiWorkPermitCounty()
-            .getAllCountyDataByYear(WorkPermitPage.tag + hashCode.toString(), widget.years![0].toString());
         break;
       case Strings.tag_work_permit_page_sector:
-        service
-            .getApiWorkPermitSector()
-            .getAllSectorDataByYear(WorkPermitPage.tag + hashCode.toString(), widget.years![0].toString());
         break;
     }
   }
@@ -77,7 +77,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   }
 
   @override
-  AppBar getAppBar(BuildContext context) {
+  AppBar? getAppBar(BuildContext context) {
     return AppBar(
         centerTitle: true, title: const Text(Strings.page_title_work_permit));
   }
@@ -112,7 +112,36 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-
-
+    if (WorkPermitPage.tag + hashCode.toString() == id) {
+      if(E is PermitsNationality) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) =>
+                  WorkPermitSubPage(data: ts, years: widget.years)),
+        );
+      } else if(E is PermitsSector) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) =>
+                  WorkPermitSubPage(data: ts, years: widget.years)),
+        );
+      } else if(E is PermitsCompany) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) =>
+                  WorkPermitSubPage(data: ts, years: widget.years, isPaginating: true)),
+        );
+      } else if(E is PermitsCounty) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) =>
+                  WorkPermitSubPage(data: ts, years: widget.years)),
+        );
+      }
+    }
   }
 }

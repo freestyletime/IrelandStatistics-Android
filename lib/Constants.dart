@@ -2,11 +2,15 @@ import 'package:event_bus/event_bus.dart';
 
 class Constants {
   static final EventBus eventBus = EventBus();
+
+  static const int pageFrom = 0;
+  static const int pageSize = 20;
 }
 
 class Strings {
   static const String page_title_home = 'Home';
   static const String page_title_work_permit = 'Work Permit';
+  static const String page_title_work_permit_company = 'Company Work Permit';
 
   static const String hint_work_permit_search = "Search your item";
   static const String hint_data_empty = "Out of data";
