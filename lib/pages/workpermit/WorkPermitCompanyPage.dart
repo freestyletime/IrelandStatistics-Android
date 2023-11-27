@@ -9,7 +9,6 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 
 import '../../widgets/CompanyWorkPermitListView.dart';
 import '../../widgets/SearchBox.dart';
-import '../CallbackController.dart';
 
 class WorkPermitCompanyPage extends StatefulWidget {
   static const String tag = 'home-work-permit-company-page';
@@ -27,13 +26,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   var pageSize = 20;
 
   late String _searchKey;
-  late CallbackController _controller;
   final _data = ValueNotifier<List<PermitsCompany>>([]);
-
-
-  void _result(String val) {
-
-  }
 
   void _searchCallback(String result) {
     _searchKey = result;
@@ -42,7 +35,6 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   void initState() {
     _searchKey = '';
-    _controller = CallbackController(context, result: _result);
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
         widget.years![0].toString(),
@@ -66,15 +58,22 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
         hint: Strings.hint_comapany_work_permit_search,
         callback: _searchCallback);
 
-    return  ValueListenableBuilder<List<PermitsCompany>>(
+    return ValueListenableBuilder<List<PermitsCompany>>(
       valueListenable: _data,
       builder: (context, data, _) {
         return CustomScrollView(
           physics: const ScrollPhysics(),
           slivers: <Widget>[
+            // Container(
+            //   alignment: Alignment.topCenter,
+            //   child: RichText(text:  TextSpan(
+            //     text: 'Logos provided by Clearbit',
+            //     style: const TextStyle(color: Colors.redAccent),
+            //     recognizer: TapGestureRecognizer()
+            //       ..onTap = () => service.launchURL('https://clearbit.com'),
+            //   ))),
             SliverToBoxAdapter(child: search),
-            CompanyWorkPermitListView(data,
-                callback: _controller.itemClick, isListView: false)
+            CompanyWorkPermitListView(data)
           ],
         );
       },
@@ -89,13 +88,13 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitCompanyPage.tag + hashCode.toString() == id) {
-      if(E is PermitsCompany) {
+        var tmp = <PermitsCompany>[];
         for(var e in ts) {
           if(e is PermitsCompany) {
-            _data.value.add(e);
+            tmp.add(e);
           }
         }
-      }
+        _data.value = tmp;
     }
   }
 }
