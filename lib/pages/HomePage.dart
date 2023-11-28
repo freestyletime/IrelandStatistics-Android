@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +58,19 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   Widget getBody(BuildContext context) {
+    Widget getFunc(String? channelId) {
+      if (channelId == '0') {
+        return Container(
+          alignment: Alignment.center,
+          child: const Text('Employment permits',
+              style: TextStyle(
+                fontSize: 14,
+              )),
+        );
+      }
+      return const EmptyCenterText();
+    }
+
     return ValueListenableBuilder<List<Channel>>(
         valueListenable: _data,
         builder: (context, data, _) {
@@ -66,42 +78,37 @@ class _HomePageState extends BasePageState<HomePage> {
 
           return CustomScrollView(slivers: <Widget>[
             _makeHeader(),
-          SliverPadding(
-          padding: const EdgeInsets.all(20),
-          sliver:
-            SliverGrid.count(
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                crossAxisCount: 2,
-
-                children: data.map((Channel c) {
-                  return InkWell(
-                      onTap: () {
-                        switch (c.channelId) {
-                          case Strings.tag_home_page_work_permit:
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => WorkPermitPage(
-                                      data: c.subChannels,
-                                      years: c.subChannelYears)),
-                            );
-                            break;
-                        }
-                      },
-                      child: Container(
-                          color: theme == Brightness.light
-                              ? Colors.teal[100]
-                              : Colors.blueGrey,
-                          child: Center(
-                            child: Text(c.channelName ?? '',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          )));
-                }).toList())
-          )]);
+            SliverPadding(
+                padding: const EdgeInsets.all(10),
+                sliver: SliverGrid.count(
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.5,
+                    children: data.map((Channel c) {
+                      return Card(
+                          elevation: 5.0,
+                          child: InkWell(
+                          onTap: () {
+                            switch (c.channelId) {
+                              case Strings.tag_home_page_work_permit:
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => WorkPermitPage(
+                                          data: c.subChannels,
+                                          years: c.subChannelYears)),
+                                );
+                                break;
+                            }
+                          },
+                          child: Container(
+                              color: theme == Brightness.light
+                                  ? Colors.teal[100]
+                                  : Colors.blueGrey,
+                              child: getFunc(c.channelId))));
+                    }).toList()))
+          ]);
         });
   }
 

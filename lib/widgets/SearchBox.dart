@@ -39,7 +39,7 @@ class SearchBox extends StatelessWidget {
                     maxLines: 1,
                     decoration:
                     InputDecoration(border: InputBorder.none, hintText: hint),
-                    cursorColor: Colors.pink,
+                    cursorColor: Colors.deepPurpleAccent,
                     onChanged: callback,
                   ))
             ],

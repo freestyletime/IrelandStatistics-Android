@@ -14,6 +14,7 @@ import '../../Constants.dart';
 import '../../models/config/SubChannel.dart';
 import '../../models/workpermit/PermitsNationality.dart';
 import '../../widgets/EmptyCenterText.dart';
+import '../../widgets/Logo.dart';
 import '../../widgets/SearchBox.dart';
 import '../CallbackController.dart';
 
@@ -97,6 +98,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               return CustomScrollView(
                 physics: const ScrollPhysics(),
                 slivers: <Widget>[
+                  const SliverToBoxAdapter(child: Logo()),
                   SliverToBoxAdapter(child: search),
                   WorkPermitListView(data,
                       callback: _controller.itemClick, isListView: false)

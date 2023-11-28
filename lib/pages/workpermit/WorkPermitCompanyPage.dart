@@ -21,7 +21,6 @@ class WorkPermitCompanyPage extends StatefulWidget {
 }
 
 class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
-
   var page = 0;
   var pageSize = 20;
 
@@ -38,17 +37,16 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
         widget.years![0].toString(),
-        page : 0,
-        pageSize : 20);
+        page: 0,
+        pageSize: 20);
     super.initState();
   }
 
   @override
   AppBar? getAppBar(BuildContext context) {
-      return AppBar(
+    return AppBar(
         centerTitle: true,
-        title: const Text(Strings.page_title_work_permit_company)
-    );
+        title: const Text(Strings.page_title_work_permit_company));
   }
 
   @override
@@ -64,14 +62,6 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
         return CustomScrollView(
           physics: const ScrollPhysics(),
           slivers: <Widget>[
-            // Container(
-            //   alignment: Alignment.topCenter,
-            //   child: RichText(text:  TextSpan(
-            //     text: 'Logos provided by Clearbit',
-            //     style: const TextStyle(color: Colors.redAccent),
-            //     recognizer: TapGestureRecognizer()
-            //       ..onTap = () => service.launchURL('https://clearbit.com'),
-            //   ))),
             SliverToBoxAdapter(child: search),
             CompanyWorkPermitListView(data)
           ],
@@ -88,13 +78,13 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitCompanyPage.tag + hashCode.toString() == id) {
-        var tmp = <PermitsCompany>[];
-        for(var e in ts) {
-          if(e is PermitsCompany) {
-            tmp.add(e);
-          }
+      var tmp = <PermitsCompany>[];
+      for (var e in ts) {
+        if (e is PermitsCompany) {
+          tmp.add(e);
         }
-        _data.value = tmp;
+      }
+      _data.value = tmp;
     }
   }
 }
