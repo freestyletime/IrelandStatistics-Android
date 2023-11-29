@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
@@ -31,12 +32,10 @@ class WorkPermitPage extends StatefulWidget {
 }
 
 class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
-  late String _searchKey;
   late CallbackController _controller;
   final _data = ValueNotifier<List<SubChannel>>([]);
 
   void _searchCallback(String result) {
-    _searchKey = result;
     if (result.isEmpty) {
       _data.value = widget.data!;
     } else {
@@ -58,8 +57,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
         Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) =>
-                  WorkPermitCompanyPage(years: widget.years)),
+              builder: (context) => WorkPermitCompanyPage(years: widget.years)),
         );
         break;
       case Strings.tag_work_permit_page_county:
@@ -71,7 +69,6 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void initState() {
-    _searchKey = '';
     _data.value = widget.data!;
     _controller = CallbackController(context, result: _result);
     super.initState();
@@ -86,9 +83,8 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   @override
   Widget getBody(BuildContext context) {
     var search = SearchBox(
-        content: _searchKey,
-        hint: Strings.hint_work_permit_search,
-        callback: _searchCallback);
+          hint: Strings.hint_work_permit_search,
+          callback: _searchCallback);
 
     return widget.data == null
         ? const EmptyCenterText()
@@ -115,28 +111,28 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitPage.tag + hashCode.toString() == id) {
-      if(E is PermitsNationality) {
+      if (E is PermitsNationality) {
         Navigator.push(
           context,
           CupertinoPageRoute(
               builder: (context) =>
                   WorkPermitSubPage(data: ts, years: widget.years)),
         );
-      } else if(E is PermitsSector) {
+      } else if (E is PermitsSector) {
         Navigator.push(
           context,
           CupertinoPageRoute(
               builder: (context) =>
                   WorkPermitSubPage(data: ts, years: widget.years)),
         );
-      } else if(E is PermitsCompany) {
+      } else if (E is PermitsCompany) {
         Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) =>
-                  WorkPermitSubPage(data: ts, years: widget.years, isPaginating: true)),
+              builder: (context) => WorkPermitSubPage(
+                  data: ts, years: widget.years, isPaginating: true)),
         );
-      } else if(E is PermitsCounty) {
+      } else if (E is PermitsCounty) {
         Navigator.push(
           context,
           CupertinoPageRoute(

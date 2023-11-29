@@ -24,19 +24,19 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   var page = 0;
   var pageSize = 20;
 
-  late String _searchKey;
+  late int _selectedYear;
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
   void _searchCallback(String result) {
-    _searchKey = result;
+
   }
 
   @override
   void initState() {
-    _searchKey = '';
+    _selectedYear = widget.years![0];
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
-        widget.years![0].toString(),
+        _selectedYear.toString(),
         page: 0,
         pageSize: 20);
     super.initState();
@@ -52,7 +52,6 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   Widget getBody(BuildContext context) {
     var search = SearchBox(
-        content: _searchKey,
         hint: Strings.hint_comapany_work_permit_search,
         callback: _searchCallback);
 
