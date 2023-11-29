@@ -21,24 +21,37 @@ class WorkPermitCompanyPage extends StatefulWidget {
 }
 
 class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
-  var page = 0;
-  var pageSize = 20;
+  var _page = 0;
+  final _pageSize = 20;
 
   late int _selectedYear;
+  final _scrollController = ScrollController();
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
   void _searchCallback(String result) {
 
   }
 
-  @override
-  void initState() {
-    _selectedYear = widget.years![0];
+  void _loadMore() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _dataInit(_page++);
+    }
+  }
+
+  void _dataInit(int page) {
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
         _selectedYear.toString(),
-        page: 0,
-        pageSize: 20);
+        page: page,
+        pageSize: _pageSize);
+  }
+
+  @override
+  void initState() {
+    _selectedYear = widget.years![0];
+    _scrollController.addListener(_loadMore);
+
+    _dataInit(_page);
     super.initState();
   }
 
@@ -59,6 +72,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
       valueListenable: _data,
       builder: (context, data, _) {
         return CustomScrollView(
+          controller: _scrollController,
           physics: const ScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(child: search),
@@ -77,13 +91,12 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitCompanyPage.tag + hashCode.toString() == id) {
-      var tmp = <PermitsCompany>[];
       for (var e in ts) {
         if (e is PermitsCompany) {
-          tmp.add(e);
+          _data.value.add(e);
         }
       }
-      _data.value = tmp;
+      _data.notifyListeners();
     }
   }
 }
