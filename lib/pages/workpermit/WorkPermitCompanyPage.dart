@@ -34,15 +34,15 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
 
   void _loadMore() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        _dataInit(_page++);
+      _dataRequest();
     }
   }
 
-  void _dataInit(int page) {
+  void _dataRequest() {
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
         _selectedYear.toString(),
-        page: page,
+        page: _page,
         pageSize: _pageSize);
   }
 
@@ -51,7 +51,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
     _selectedYear = widget.years![0];
     _scrollController.addListener(_loadMore);
 
-    _dataInit(_page);
+    _dataRequest();
     super.initState();
   }
 
@@ -96,6 +96,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           _data.value.add(e);
         }
       }
+      _page++;
       _data.notifyListeners();
     }
   }

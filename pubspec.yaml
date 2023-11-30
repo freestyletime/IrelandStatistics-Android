@@ -21,6 +21,7 @@ dependencies:
   connectivity_plus: ^5.0.1
   shared_preferences: ^2.2.2
   cached_network_image: ^3.3.0
+  modal_progress_hud_nsn: ^0.4.0
 
 dev_dependencies:
   flutter_test:

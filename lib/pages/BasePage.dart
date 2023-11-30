@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/ServiceLocator.dart';
 import 'package:irelandstatistics/Services.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../Constants.dart';
 import '../events/Event.dart';
@@ -29,6 +30,10 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   late StreamSubscription c_subscription;
   late StreamSubscription f_subscription;
 
+  // is page loading data
+  var _isLoading = 0;
+  var isLoading = ValueNotifier<bool>(false);
+
   // facade pattern
   var service = locator<Services>();
 
@@ -40,10 +45,12 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
 
   @override
   void initState() {
-    super.initState();
     s_subscription = Constants.eventBus.on<SEvent>().listen((event) {
       if (event.id.endsWith(hashCode.toString())) {
-
+        if (_isLoading == 0) {
+          isLoading.value = true;
+        }
+        _isLoading += 1;
       }
     });
 
@@ -55,7 +62,11 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
 
     c_subscription = Constants.eventBus.on<CEvent>().listen((event) {
       if (event.id.endsWith(hashCode.toString())) {
-
+        _isLoading -= 1;
+        if (_isLoading <= 0) {
+          _isLoading = 0;
+          isLoading.value = false;
+        }
       }
     });
 
@@ -64,6 +75,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
         showSnackBar(event.msg);
       }
     });
+    super.initState();
   }
 
   @override
@@ -77,10 +89,59 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    var progressWidget = Center(
+      child: Material(
+        color: Colors.transparent,
+        child: Center(
+          child: SizedBox(
+            width: 100.0,
+            height: 100.0,
+            child: Container(
+              decoration: const ShapeDecoration(
+                color: Colors.blueGrey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  ),
+                ),
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20.0,
+                    ),
+                    child: Text(
+                      Strings.msg_loading,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
       appBar: getAppBar(context),
-      body: Container(
-          child: getBody(context)),
+      body: ValueListenableBuilder<bool>(
+        valueListenable: isLoading,
+        builder: (context, saving, _) => ModalProgressHUD(
+          color: Colors.deepPurpleAccent,
+          dismissible: true,
+          progressIndicator: progressWidget,
+          inAsyncCall: saving,
+          child: Container(child: getBody(context)),
+        ),
+      ),
+
+
       floatingActionButton: getFloatingActionButton(context),
     );
   }
