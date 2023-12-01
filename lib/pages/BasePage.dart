@@ -10,10 +10,6 @@ import '../events/Event.dart';
 import '../models/IBean.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T> {
-
-  // theme
-  var theme = Brightness.light;
-
   // title
   AppBar? getAppBar(BuildContext context);
 
@@ -38,8 +34,8 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   var service = locator<Services>();
 
   void showSnackBar(String msg) {
-    var snackBar = SnackBar(
-        content: Text(msg), duration: const Duration(seconds: 1));
+    var snackBar =
+        SnackBar(content: Text(msg), duration: const Duration(seconds: 1));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -94,14 +90,14 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
         color: Colors.transparent,
         child: Center(
           child: SizedBox(
-            width: 100.0,
-            height: 100.0,
+            width: 125.0,
+            height: 125.0,
             child: Container(
               decoration: const ShapeDecoration(
-                color: Colors.blueGrey,
+                color: Colors.black26,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(8.0),
+                    Radius.circular(10.0),
                   ),
                 ),
               ),
@@ -109,15 +105,15 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  CircularProgressIndicator(),
+                  CircularProgressIndicator(color: Colors.purpleAccent),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 20.0,
+                      top: 25.0,
                     ),
                     child: Text(
                       Strings.msg_loading,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                          fontSize: 16.0, color: Colors.purpleAccent),
                     ),
                   ),
                 ],
@@ -133,15 +129,13 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
       body: ValueListenableBuilder<bool>(
         valueListenable: isLoading,
         builder: (context, saving, _) => ModalProgressHUD(
-          color: Colors.deepPurpleAccent,
+          color: Colors.black87,
           dismissible: true,
           progressIndicator: progressWidget,
           inAsyncCall: saving,
           child: Container(child: getBody(context)),
         ),
       ),
-
-
       floatingActionButton: getFloatingActionButton(context),
     );
   }

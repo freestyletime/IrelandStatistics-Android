@@ -24,6 +24,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
+
+  // theme
+  var theme = Brightness.light;
+
   final _data = ValueNotifier<List<Channel>>([]);
 
   SliverPersistentHeader _makeHeader() {

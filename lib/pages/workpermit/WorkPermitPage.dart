@@ -94,7 +94,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               return CustomScrollView(
                 physics: const ScrollPhysics(),
                 slivers: <Widget>[
-                  const SliverToBoxAdapter(child: Logo()),
+                  const SliverToBoxAdapter(child: WorkPermitsDataResourceLogo()),
                   SliverToBoxAdapter(child: search),
                   WorkPermitListView(data,
                       callback: _controller.itemClick, isListView: false)

@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Logo extends StatelessWidget {
-  const Logo({super.key});
+class WorkPermitsDataResourceLogo extends StatelessWidget {
+  const WorkPermitsDataResourceLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
