@@ -46,48 +46,71 @@ class NetWork {
     return connectivityResult != ConnectivityResult.none;
   }
 
-  static String errorHandle(String id, int? statusCode) {
-    String error = Strings.msg_default;
-    switch (statusCode) {
-      case HttpStatus.badRequest:
-        error = Strings.msg_400;
-        break;
-      case HttpStatus.forbidden:
-        error = Strings.msg_403;
-        break;
-      case HttpStatus.notFound:
-        error = Strings.msg_404;
-        break;
-    }
-    return error;
-  }
+  static void get<T extends IBean>(String id, String url,
+      {T? t, Map<String, dynamic>? data}) {
 
-  static void get<T extends IBean>(String id, String url, {T? t, Map<String, dynamic>? data}) {
+    Future<List<dynamic>> httpGet(String url,
+        {Map<String, dynamic>? data,
+        CancelToken? cancelToken,
+        ProgressCallback? onReceiveProgress}) async {
+      try {
+        var response = await dio.get(
+          url,
+          queryParameters: data,
+          cancelToken: cancelToken,
+          onReceiveProgress: onReceiveProgress,
+        );
+        return response.data;
+      } catch (e) {
+        rethrow;
+      }
+    }
+
+    List<dynamic> errorHandle(String id, Exception e) {
+      var res = [];
+      var str = '';
+      if (e is DioException) {
+        switch (e.type) {
+          case DioExceptionType.connectionTimeout:
+            str = Strings.msg_connection_timeout;
+            break;
+          case DioExceptionType.connectionError:
+          case DioExceptionType.sendTimeout:
+          case DioExceptionType.receiveTimeout:
+            str = Strings.msg_network_timeout;
+            break;
+          case DioExceptionType.badCertificate:
+            str = Strings.msg_cert_error;
+          case DioExceptionType.badResponse:
+            str = Strings.msg_params_error;
+            break;
+          case DioExceptionType.cancel:
+            str = Strings.msg_connection_cancel;
+            break;
+          default:
+            str = Strings.msg_unknow;
+            break;
+        }
+      }
+
+      Constants.eventBus.fire(FEvent(id, str));
+      return res;
+    }
+
     Constants.eventBus.fire(SEvent(id));
     NetWork.isConnected().then((isConnected) => {
           if (isConnected)
             {
-              dio
-                  .get<List<dynamic>>(
-                    url,
-                    queryParameters: data,
-                  )
+              httpGet(url, data: data)
+                  .catchError((error, stackTrace) => errorHandle(id, error))
                   .then((res) => {
-                        if (res.statusCode == HttpStatus.ok)
-                          {
-                            if (t != null) Constants.eventBus.fire(BeanEvent<T>(id, res.data, t))
-                          }
-                        else
-                          {
-                            Constants.eventBus.fire(FEvent(id, errorHandle(id, res.statusCode)))
-                          }
+                        if (t != null)
+                          Constants.eventBus.fire(BeanEvent<T>(id, res, t))
                       })
                   .whenComplete(() => Constants.eventBus.fire(CEvent(id)))
             }
           else
-            {
-              Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))
-            }
+            {Constants.eventBus.fire(FEvent(id, Strings.msg_not_connection))}
         });
   }
 }

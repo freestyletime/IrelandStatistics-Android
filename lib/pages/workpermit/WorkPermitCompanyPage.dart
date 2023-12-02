@@ -28,12 +28,11 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   final _scrollController = ScrollController();
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
-  void _searchCallback(String result) {
-
-  }
+  void _searchCallback(String result) {}
 
   void _loadMore() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       _dataRequest();
     }
   }
@@ -48,7 +47,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
 
   @override
   void initState() {
-    _selectedYear = widget.years![0];
+    _selectedYear = widget.years![0]; //widget.years![0];
     _scrollController.addListener(_loadMore);
 
     _dataRequest();

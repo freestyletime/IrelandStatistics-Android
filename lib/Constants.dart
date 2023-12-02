@@ -25,6 +25,13 @@ class Strings {
   static const String msg_request_error = 'Something wrong while request.';
   static const String msg_loading = 'Loading...';
 
+  static const String msg_connection_timeout = 'Connection timeout, please try it again.';
+  static const String msg_network_timeout = 'Network error, please try it again.';
+  static const String msg_params_error = 'Sorry, the data is preparing.';
+  static const String msg_cert_error = 'You have no permission to access.';
+  static const String msg_connection_cancel = 'Your request was cancelled.';
+  static const String msg_unknow = 'Unknow internet error, please try it again.';
+
 
 
   static const String tag_home_page_work_permit = '0';

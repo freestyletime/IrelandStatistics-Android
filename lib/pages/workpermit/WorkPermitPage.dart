@@ -3,17 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
-import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
-import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
-import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitCompanyPage.dart';
-import 'package:irelandstatistics/pages/workpermit/WorkPermitSubPage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
 import '../../models/config/SubChannel.dart';
-import '../../models/workpermit/PermitsNationality.dart';
 import '../../widgets/EmptyCenterText.dart';
 import '../../widgets/Logo.dart';
 import '../../widgets/SearchBox.dart';
@@ -110,36 +105,5 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-    if (WorkPermitPage.tag + hashCode.toString() == id) {
-      if (E is PermitsNationality) {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) =>
-                  WorkPermitSubPage(data: ts, years: widget.years)),
-        );
-      } else if (E is PermitsSector) {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) =>
-                  WorkPermitSubPage(data: ts, years: widget.years)),
-        );
-      } else if (E is PermitsCompany) {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => WorkPermitSubPage(
-                  data: ts, years: widget.years, isPaginating: true)),
-        );
-      } else if (E is PermitsCounty) {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) =>
-                  WorkPermitSubPage(data: ts, years: widget.years)),
-        );
-      }
-    }
   }
 }
