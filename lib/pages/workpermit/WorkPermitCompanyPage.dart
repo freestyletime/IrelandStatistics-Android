@@ -12,9 +12,9 @@ import '../../widgets/SearchBox.dart';
 
 class WorkPermitCompanyPage extends StatefulWidget {
   static const String tag = 'home-work-permit-company-page';
-  final List<int>? years;
+  final int year;
 
-  const WorkPermitCompanyPage({super.key, required this.years});
+  const WorkPermitCompanyPage({super.key, required this.year});
 
   @override
   State<WorkPermitCompanyPage> createState() => _WorkPermitCompanyPageState();
@@ -24,7 +24,6 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   var _page = 0;
   final _pageSize = 20;
 
-  late int _selectedYear;
   final _scrollController = ScrollController();
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
@@ -40,14 +39,13 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   void _dataRequest() {
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(),
-        _selectedYear.toString(),
+        widget.year.toString(),
         page: _page,
         pageSize: _pageSize);
   }
 
   @override
-  void initState() {
-    _selectedYear = widget.years![0]; //widget.years![0];
+  void initState() {//widget.years![0];
     _scrollController.addListener(_loadMore);
 
     _dataRequest();
@@ -84,7 +82,14 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
 
   @override
   FloatingActionButton? getFloatingActionButton(BuildContext context) {
-    return null;
+    return FloatingActionButton(
+      child: const Icon(Icons.arrow_upward_rounded),
+      onPressed: () {
+        if(_scrollController.position.pixels > 0) {
+          _scrollController.jumpTo(0);
+        }
+      },
+    );
   }
 
   @override

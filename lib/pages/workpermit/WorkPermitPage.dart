@@ -17,8 +17,8 @@ import '../CallbackController.dart';
 class WorkPermitPage extends StatefulWidget {
   static const String tag = 'work-permit-page';
 
-  final List<SubChannel>? data;
   final List<int>? years;
+  final List<SubChannel>? data;
 
   const WorkPermitPage({super.key, required this.data, required this.years});
 
@@ -27,6 +27,7 @@ class WorkPermitPage extends StatefulWidget {
 }
 
 class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
+  late int selectedYear;
   late CallbackController _controller;
   final _data = ValueNotifier<List<SubChannel>>([]);
 
@@ -52,7 +53,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
         Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) => WorkPermitCompanyPage(years: widget.years)),
+              builder: (context) => WorkPermitCompanyPage(year: selectedYear)),
         );
         break;
       case Strings.tag_work_permit_page_county:
@@ -64,6 +65,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void initState() {
+    selectedYear = widget.years![0];
     _data.value = widget.data!;
     _controller = CallbackController(context, result: _result);
     super.initState();
@@ -78,8 +80,62 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   @override
   Widget getBody(BuildContext context) {
     var search = SearchBox(
-          hint: Strings.hint_work_permit_search,
-          callback: _searchCallback);
+        hint: Strings.hint_work_permit_search, callback: _searchCallback);
+
+    var yearPicker = Container(
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+      decoration: BoxDecoration(
+          color: Colors.blueGrey,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.lightBlueAccent,
+            width: 5,
+          )),
+      child: ConstrainedBox(
+        constraints:
+            const BoxConstraints(minWidth: double.infinity, minHeight: 40.0),
+        child: Flex(
+          direction: Axis.horizontal,
+          children: <Widget>[
+            const Expanded(
+              flex: 2,
+              child: Text('Year Picker :',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.limeAccent,
+                      fontWeight: FontWeight.bold)),
+            ),
+            Expanded(
+              flex: 5,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<int>(
+                  isExpanded: true,
+                  icon: Icon(Icons.arrow_drop_down_sharp),
+                  alignment: AlignmentDirectional.center,
+                  style: const TextStyle(color: Colors.lightBlue,fontSize: 16, fontWeight: FontWeight.bold),
+                  value: selectedYear,
+                  items: widget.years!
+                      .map((e) => DropdownMenuItem<int>(
+                            alignment: Alignment.center,
+                            value: e,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedYear = value!;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
 
     return widget.data == null
         ? const EmptyCenterText()
@@ -89,8 +145,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               return CustomScrollView(
                 physics: const ScrollPhysics(),
                 slivers: <Widget>[
-                  const SliverToBoxAdapter(child: WorkPermitsDataResourceLogo()),
+                  const SliverToBoxAdapter(
+                      child: WorkPermitsDataResourceLogo()),
                   SliverToBoxAdapter(child: search),
+                  SliverToBoxAdapter(child: yearPicker),
                   WorkPermitListView(data,
                       callback: _controller.itemClick, isListView: false)
                 ],
@@ -104,6 +162,5 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   }
 
   @override
-  void success<E extends IBean>(String id, List<E> ts) {
-  }
+  void success<E extends IBean>(String id, List<E> ts) {}
 }

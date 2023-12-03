@@ -4,7 +4,7 @@ import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 class CompanyWorkPermitListView extends StatelessWidget {
   final List<PermitsCompany> data;
 
-  const CompanyWorkPermitListView(this.data, {super.key });
+  const CompanyWorkPermitListView(this.data, {super.key});
 
   Widget _basicInfo(PermitsCompany data) {
     return Container(
@@ -14,33 +14,33 @@ class CompanyWorkPermitListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        width: 300,
-                        child: Text(data.employer ?? '',
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 16))),
+              Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(data.employer ?? '',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 16)),
                     const SizedBox(
                       height: 15,
                     ),
                     Text('Total Permit(${data.year}): ${data.count ?? 0}',
-                        style: const TextStyle(color: Colors.deepPurpleAccent, fontSize: 14))
-                  ])
+                        style: const TextStyle(
+                            color: Colors.deepPurpleAccent, fontSize: 14))
+                  ]))
             ]));
   }
 
   Widget _monthCountInfo(PermitsCompany data) {
-
-    Widget getContent(String str){
+    Widget getContent(String str) {
       const fixedHeight = 40.0;
       return Container(
         alignment: Alignment.center,
         color: Colors.blueGrey,
         height: fixedHeight,
-        child: Text(str, style: const TextStyle(fontSize: 14, color: Colors.white)),
+        child: Text(str,
+            style: const TextStyle(fontSize: 14, color: Colors.white)),
       );
     }
 
