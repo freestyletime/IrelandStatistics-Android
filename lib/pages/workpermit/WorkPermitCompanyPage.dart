@@ -6,15 +6,18 @@ import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
+import 'package:irelandstatistics/widgets/GrandTotalWithMonth.dart';
 
 import '../../widgets/CompanyWorkPermitListView.dart';
 import '../../widgets/SearchBox.dart';
 
 class WorkPermitCompanyPage extends StatefulWidget {
   static const String tag = 'home-work-permit-company-page';
-  final int year;
 
-  const WorkPermitCompanyPage({super.key, required this.year});
+  final int year;
+  final PermitsCompany grandTotal;
+
+  const WorkPermitCompanyPage({super.key, required this.grandTotal, required this.year});
 
   @override
   State<WorkPermitCompanyPage> createState() => _WorkPermitCompanyPageState();
@@ -73,6 +76,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           physics: const ScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(child: search),
+            SliverToBoxAdapter(child: GrandTotalWithMonth<PermitsCompany>(data: widget.grandTotal)),
             CompanyWorkPermitListView(data)
           ],
         );
@@ -95,13 +99,11 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitCompanyPage.tag + hashCode.toString() == id) {
-      for (var e in ts) {
-        if (e is PermitsCompany) {
-          _data.value.add(e);
-        }
+      if(ts.isNotEmpty && ts[0] is PermitsCompany) {
+        _data.value.addAll(ts as Iterable<PermitsCompany>);
+        _data.notifyListeners();
+        _page++;
       }
-      _page++;
-      _data.notifyListeners();
     }
   }
 }

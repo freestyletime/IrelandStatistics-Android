@@ -5,6 +5,8 @@ class Constants {
 
   static const int pageFrom = 0;
   static const int pageSize = 20;
+
+  static const String field_grand_total = 'Grand Total';
 }
 
 class Strings {

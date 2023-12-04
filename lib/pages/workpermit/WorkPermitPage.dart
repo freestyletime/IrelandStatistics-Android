@@ -9,6 +9,7 @@ import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
 import '../../models/config/SubChannel.dart';
+import '../../models/workpermit/PermitsCompany.dart';
 import '../../widgets/EmptyCenterText.dart';
 import '../../widgets/Logo.dart';
 import '../../widgets/SearchBox.dart';
@@ -50,11 +51,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
       case Strings.tag_work_permit_page_nationality:
         break;
       case Strings.tag_work_permit_page_companies:
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => WorkPermitCompanyPage(year: selectedYear)),
-        );
+        service.getApiWorkPermitCompany().getCompanyDataByYear(
+            WorkPermitPage.tag + hashCode.toString(),
+            selectedYear.toString(),
+            Constants.field_grand_total);
         break;
       case Strings.tag_work_permit_page_county:
         break;
@@ -113,7 +113,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
                   isExpanded: true,
                   icon: Icon(Icons.arrow_drop_down_sharp),
                   alignment: AlignmentDirectional.center,
-                  style: const TextStyle(color: Colors.lightBlue,fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                   value: selectedYear,
                   items: widget.years!
                       .map((e) => DropdownMenuItem<int>(
@@ -162,5 +165,16 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   }
 
   @override
-  void success<E extends IBean>(String id, List<E> ts) {}
+  void success<E extends IBean>(String id, List<E> ts) {
+    if (WorkPermitPage.tag + hashCode.toString() == id) {
+      if (ts.isNotEmpty && ts[0] is PermitsCompany) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => WorkPermitCompanyPage(
+                  grandTotal: ts[0] as PermitsCompany, year: selectedYear)),
+        );
+      }
+    }
+  }
 }

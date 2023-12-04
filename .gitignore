@@ -1,6 +1,7 @@
 build/
 .dart_tool/
 .packages
+.DS_Store
 
 **/doc/api/
 **/ios/Flutter/.last_build_id

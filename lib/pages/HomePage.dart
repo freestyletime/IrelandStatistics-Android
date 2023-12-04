@@ -133,11 +133,9 @@ class _HomePageState extends BasePageState<HomePage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (HomePage.tag + hashCode.toString() == id) {
-      var tmp = <Channel>[];
-      for (var i in ts) {
-        if (i is Channel) tmp.add(i);
+      if(ts.isNotEmpty && ts[0] is Channel) {
+        _data.value.addAll(ts as Iterable<Channel>);
       }
-      _data.value = tmp;
     }
   }
 }
