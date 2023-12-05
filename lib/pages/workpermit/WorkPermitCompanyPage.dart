@@ -68,6 +68,8 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
         hint: Strings.hint_comapany_work_permit_search,
         callback: _searchCallback);
 
+    var grandTotal = GrandTotalWithMonth<PermitsCompany>(data: widget.grandTotal);
+
     return ValueListenableBuilder<List<PermitsCompany>>(
       valueListenable: _data,
       builder: (context, data, _) {
@@ -76,7 +78,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           physics: const ScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(child: search),
-            SliverToBoxAdapter(child: GrandTotalWithMonth<PermitsCompany>(data: widget.grandTotal)),
+            SliverToBoxAdapter(child: grandTotal),
             CompanyWorkPermitListView(data)
           ],
         );

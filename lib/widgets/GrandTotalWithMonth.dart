@@ -1,11 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 
 class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
-
   final E data;
 
   final List<Color> gradientColors = [
@@ -17,36 +17,69 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var count = 0;
+    var year = '1990';
+    if (data is PermitsCompany) {
+      var tmp = data as PermitsCompany;
+      count = tmp.count ?? 0;
+      year = tmp.year ?? year;
+    }
 
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        Container(
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 2,
+                  offset: Offset(2, 4),
+                ),
+              ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Icon(Icons.business_center_rounded),
+                  const SizedBox(width: 10),
+                  Text(
+                    '${Constants.field_grand_total} - $year',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.cyanAccent,
+                        fontSize: 16),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 8),
+              Text(
+                'Total Permits: ${count.toString()}',
+                style: const TextStyle(fontSize: 14),
+              )
+            ],
+          ),
+        ),
         AspectRatio(
-          aspectRatio: 1.70,
+          aspectRatio: 2.0,
           child: Padding(
             padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
-              top: 24,
-              bottom: 12,
+              right: 10,
+              left: 10,
+              top: 15,
+              bottom: 10,
             ),
             child: LineChart(
               showMainData(data),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black.withOpacity(0.5)
-              ),
             ),
           ),
         ),
@@ -114,21 +147,21 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  List<FlSpot> getData(E bean){
-    if(bean is PermitsCompany) {
+  List<FlSpot> getData(E bean) {
+    if (bean is PermitsCompany) {
       return [
-        FlSpot(0, bean.monthCount![0].toDouble()),
-        FlSpot(1, bean.monthCount![1].toDouble()),
-        FlSpot(2, bean.monthCount![2].toDouble()),
-        FlSpot(3, bean.monthCount![3].toDouble()),
-        FlSpot(4, bean.monthCount![4].toDouble()),
-        FlSpot(5, bean.monthCount![5].toDouble()),
-        FlSpot(6, bean.monthCount![6].toDouble()),
-        FlSpot(7, bean.monthCount![7].toDouble()),
-        FlSpot(8, bean.monthCount![8].toDouble()),
-        FlSpot(9, bean.monthCount![9].toDouble()),
-        FlSpot(10, bean.monthCount![10].toDouble()),
-        FlSpot(11, bean.monthCount![11].toDouble())
+        FlSpot(0, bean.monthCount![0].toDouble() / 1000.00),
+        FlSpot(1, bean.monthCount![1].toDouble() / 1000.00),
+        FlSpot(2, bean.monthCount![2].toDouble() / 1000.00),
+        FlSpot(3, bean.monthCount![3].toDouble() / 1000.00),
+        FlSpot(4, bean.monthCount![4].toDouble() / 1000.00),
+        FlSpot(5, bean.monthCount![5].toDouble() / 1000.00),
+        FlSpot(6, bean.monthCount![6].toDouble() / 1000.00),
+        FlSpot(7, bean.monthCount![7].toDouble() / 1000.00),
+        FlSpot(8, bean.monthCount![8].toDouble() / 1000.00),
+        FlSpot(9, bean.monthCount![9].toDouble() / 1000.00),
+        FlSpot(10, bean.monthCount![10].toDouble() / 1000.00),
+        FlSpot(11, bean.monthCount![11].toDouble() / 1000.00)
       ];
     }
 
@@ -187,7 +220,7 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 6,
+      maxY: 5,
       lineBarsData: [
         LineChartBarData(
           spots: getData(data),
