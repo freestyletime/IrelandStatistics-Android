@@ -6,14 +6,17 @@ import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 
 class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
+
   final E data;
+  final IconData icon;
+
 
   final List<Color> gradientColors = [
     Colors.cyanAccent,
     Colors.blue,
   ];
 
-  GrandTotalWithMonth({super.key, required this.data});
+  GrandTotalWithMonth({super.key, required this.data, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -42,30 +45,28 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
                   offset: Offset(2, 4),
                 ),
               ]),
-          child: Column(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Icon(icon),
+              const SizedBox(width: 10),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Icon(Icons.business_center_rounded),
-                  const SizedBox(width: 10),
                   Text(
                     '${Constants.field_grand_total} - $year',
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold,
                         color: Colors.cyanAccent,
                         fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Total Permits: ${count.toString()}',
+                    style: const TextStyle(fontSize: 14),
                   )
                 ],
               ),
-
-              const SizedBox(height: 8),
-              Text(
-                'Total Permits: ${count.toString()}',
-                style: const TextStyle(fontSize: 14),
-              )
             ],
           ),
         ),

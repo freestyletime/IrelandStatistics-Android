@@ -11,6 +11,7 @@ class Constants {
 
 class Strings {
   static const String page_title_home = 'Home';
+  static const String page_title_work_permit_search = 'Work Permit Search';
   static const String page_title_work_permit = 'Work Permit';
   static const String page_title_work_permit_company = 'Company Work Permit';
 

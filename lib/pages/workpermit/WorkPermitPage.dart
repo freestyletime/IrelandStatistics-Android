@@ -111,7 +111,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<int>(
                   isExpanded: true,
-                  icon: Icon(Icons.arrow_drop_down_sharp),
+                  icon: const Icon(Icons.arrow_drop_down_sharp),
                   alignment: AlignmentDirectional.center,
                   style: const TextStyle(
                       color: Colors.lightBlue,
