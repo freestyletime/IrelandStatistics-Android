@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/app_bar.dart';
-import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitCompanyPage.dart';
@@ -80,7 +78,9 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   @override
   Widget getBody(BuildContext context) {
     var search = SearchBox(
-        hint: Strings.hint_work_permit_search, callback: _searchCallback);
+        hint: Strings.hint_work_permit_search,
+        supportChangeCallback: true,
+        callback: _searchCallback);
 
     var yearPicker = Container(
       margin: const EdgeInsets.all(5),

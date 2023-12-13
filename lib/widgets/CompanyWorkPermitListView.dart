@@ -4,7 +4,7 @@ import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 class CompanyWorkPermitListView extends StatelessWidget {
   final List<PermitsCompany> data;
 
-  const CompanyWorkPermitListView(this.data, {super.key});
+  const  CompanyWorkPermitListView(this.data, {super.key});
 
   Widget _basicInfo(PermitsCompany data) {
     return Container(

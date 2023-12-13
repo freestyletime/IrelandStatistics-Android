@@ -12,7 +12,6 @@ import '../Constants.dart';
 import '../main.dart';
 import '../models/config/Channel.dart';
 import '../widgets/EmptyCenterText.dart';
-import '../widgets/SliverAppBarDelegate.dart';
 
 class HomePage extends StatefulWidget {
   static const String tag = 'home-page';
@@ -30,20 +29,11 @@ class _HomePageState extends BasePageState<HomePage> {
 
   final _data = ValueNotifier<List<Channel>>([]);
 
-  SliverPersistentHeader _makeHeader() {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: SliverAppBarDelegate(
-        minHeight: 35.0,
-        maxHeight: 260.0,
-        child: Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/header.jpeg"),
-                fit: BoxFit.cover,
-              ),
-            )),
+  SliverAppBar _makeHeader() {
+    return const SliverAppBar(
+      expandedHeight: 230,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Image(image: AssetImage("assets/images/header.jpeg")),
       ),
     );
   }
@@ -56,8 +46,7 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   AppBar? getAppBar(BuildContext context) {
-    return null;
-    // AppBar(centerTitle: true, title: const Text(Strings.page_title_home));
+    return AppBar(centerTitle: true, title: const Text(Strings.page_title_home));
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TopTitleText extends StatelessWidget {
@@ -9,10 +8,15 @@ class TopTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      color: Colors.lightBlueAccent,
       padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.blueGrey,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.lightBlueAccent,
+            width: 5,
+          )),
       child: const Text('Top 50 List', style: TextStyle(fontSize: 18)),
-
     );
   }
 }

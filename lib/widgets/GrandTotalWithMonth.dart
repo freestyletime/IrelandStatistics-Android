@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
@@ -133,13 +132,13 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '1K';
         break;
       case 3:
-        text = '30k';
+        text = '3k';
         break;
       case 5:
-        text = '50k';
+        text = '5k';
         break;
       default:
         return Container();

@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/app_bar.dart';
-import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
@@ -13,7 +11,7 @@ import '../../widgets/CompanyWorkPermitListView.dart';
 import '../../widgets/TopTitleText.dart';
 
 class WorkPermitCompanyPage extends StatefulWidget {
-  static const String tag = 'home-work-permit-company-page';
+  static const String tag = 'work-permit-company-page';
 
   final int year;
   final PermitsCompany grandTotal;
