@@ -6,6 +6,8 @@ class Constants {
   static const int pageFrom = 0;
   static const int pageSize = 20;
 
+  static const int pageTopSize = 30;
+
   static const String field_grand_total = 'Grand Total';
 }
 
@@ -30,7 +32,7 @@ class Strings {
 
   static const String msg_connection_timeout = 'Connection timeout, please try it again.';
   static const String msg_network_timeout = 'Network error, please try it again.';
-  static const String msg_params_error = 'Sorry, the data is preparing.';
+  static const String msg_params_error = 'Sorry, the data is not found.';
   static const String msg_cert_error = 'You have no permission to access.';
   static const String msg_connection_cancel = 'Your request was cancelled.';
   static const String msg_unknow = 'Unknow internet error, please try it again.';

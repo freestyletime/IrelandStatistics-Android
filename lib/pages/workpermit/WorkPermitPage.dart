@@ -10,7 +10,6 @@ import '../../models/config/SubChannel.dart';
 import '../../models/workpermit/PermitsCompany.dart';
 import '../../widgets/EmptyCenterText.dart';
 import '../../widgets/Logo.dart';
-import '../../widgets/SearchBox.dart';
 import '../CallbackController.dart';
 
 class WorkPermitPage extends StatefulWidget {
@@ -77,10 +76,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   Widget getBody(BuildContext context) {
-    var search = SearchBox(
-        hint: Strings.hint_work_permit_search,
-        supportChangeCallback: true,
-        callback: _searchCallback);
+    // var search = SearchBox(
+    //     hint: Strings.hint_work_permit_search,
+    //     supportChangeCallback: false,
+    //     callback: _searchCallback);
 
     var yearPicker = Container(
       margin: const EdgeInsets.all(5),
@@ -150,7 +149,7 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
                 slivers: <Widget>[
                   const SliverToBoxAdapter(
                       child: WorkPermitsDataResourceLogo()),
-                  SliverToBoxAdapter(child: search),
+                  // SliverToBoxAdapter(child: search),
                   SliverToBoxAdapter(child: yearPicker),
                   WorkPermitListView(data,
                       callback: _controller.itemClick, isListView: false)

@@ -21,11 +21,14 @@ class WorkPermitSearchPage extends StatefulWidget {
 }
 
 class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
+
   late String _name;
+  bool _isLoadMore = true;
+
   var _page = 0;
   final _pageSize = 20;
 
-  final _scrollController = ScrollController();
+  late ScrollController _scrollController;
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
   void _dataRequest() {
@@ -38,7 +41,7 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
   }
 
   void _loadMore() {
-    if (_scrollController.position.pixels ==
+    if (_isLoadMore && _scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _dataRequest();
     }
@@ -54,9 +57,15 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
 
   @override
   void initState() {
-    _scrollController.addListener(_loadMore);
-
     super.initState();
+
+    _scrollController = ScrollController()..addListener(_loadMore);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_loadMore);
+    super.dispose();
   }
 
   @override
@@ -68,6 +77,7 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
 
   @override
   Widget getBody(BuildContext context) {
+
     var search = SearchBox(
         hint: Strings.hint_comapany_work_permit_search,
         supportChangeCallback: false,
@@ -76,20 +86,18 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
     return ValueListenableBuilder<List<IBean>>(
       valueListenable: _data,
       builder: (context, data, _) {
-        Widget content;
 
-        if (data.isEmpty) {
-          content = const SliverToBoxAdapter(child: Placeholder());
-        } else {
-          content = CompanyWorkPermitListView(data as List<PermitsCompany>);
+        var ws = <Widget>[];
+        ws.add(SliverToBoxAdapter(child: search));
+
+        if (data.isNotEmpty) {
+          ws.add(CompanyWorkPermitListView(data as List<PermitsCompany>));
         }
 
         return CustomScrollView(
+          controller: _scrollController,
           physics: const ScrollPhysics(),
-          slivers: <Widget>[
-            SliverToBoxAdapter(child: search),
-            content,
-          ],
+          slivers: ws,
         );
       },
     );
@@ -110,9 +118,18 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
   @override
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitSearchPage.tag + hashCode.toString() == id) {
-      if (ts.isNotEmpty && ts[0] is PermitsCompany) {
-        _data.value.addAll(ts as Iterable<PermitsCompany>);
-        _data.notifyListeners();
+      if (ts.isNotEmpty) {
+        for(var t in ts){
+          if(t is PermitsCompany) {
+            _data.value.add(t);
+          }
+        }
+
+        if(ts.length == _pageSize) {
+          _page++;
+        } else {
+          _isLoadMore = false;
+        }
       }
     }
   }

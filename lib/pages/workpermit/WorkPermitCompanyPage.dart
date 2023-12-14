@@ -24,15 +24,12 @@ class WorkPermitCompanyPage extends StatefulWidget {
 }
 
 class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
-
-  static const int size = 50;
-
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
   void _dataRequest() {
     service.getApiWorkPermitCompany().getAllCompanyDataByYear(
         WorkPermitCompanyPage.tag + hashCode.toString(), widget.year.toString(),
-        page: 0, pageSize: size);
+        page: 0, pageSize: Constants.pageTopSize);
   }
 
   @override

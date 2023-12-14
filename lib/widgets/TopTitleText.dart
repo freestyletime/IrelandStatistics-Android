@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class TopTitleText extends StatelessWidget {
+import '../Constants.dart';
 
+class TopTitleText extends StatelessWidget {
   const TopTitleText({super.key});
 
   @override
@@ -16,7 +17,11 @@ class TopTitleText extends StatelessWidget {
             color: Colors.lightBlueAccent,
             width: 5,
           )),
-      child: const Text('Top 50 List', style: TextStyle(fontSize: 18)),
+      child: const Text('Top ${Constants.pageTopSize} List',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.limeAccent,
+              fontSize: 16)),
     );
   }
 }
