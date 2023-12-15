@@ -53,9 +53,8 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                  builder: (context) => WorkPermitSearchPage(
-                      type: Strings.tag_work_permit_page_companies,
-                      year: widget.year)),
+                  builder: (context) =>
+                      WorkPermitSearchPage(year: widget.year)),
             );
           },
         ),

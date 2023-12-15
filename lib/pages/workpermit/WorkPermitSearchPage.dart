@@ -10,11 +10,10 @@ import '../../widgets/SearchBox.dart';
 class WorkPermitSearchPage extends StatefulWidget {
   static const String tag = 'work-permit-search-page';
 
-  final String type;
   final int year;
 
   const WorkPermitSearchPage(
-      {super.key, required this.type, required this.year});
+      {super.key, required this.year});
 
   @override
   State<WorkPermitSearchPage> createState() => _WorkPermitSearchPageState();

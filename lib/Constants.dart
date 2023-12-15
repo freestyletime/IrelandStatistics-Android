@@ -16,6 +16,7 @@ class Strings {
   static const String page_title_work_permit_search = 'Work Permit Search';
   static const String page_title_work_permit = 'Work Permit';
   static const String page_title_work_permit_company = 'Company Work Permit';
+  static const String page_title_work_permit_nationality = 'Nationality Work Permit';
 
   static const String hint_work_permit_search = 'Search your item';
   static const String hint_comapany_work_permit_search = 'Company Name';
