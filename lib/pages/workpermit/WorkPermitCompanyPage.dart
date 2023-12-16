@@ -7,7 +7,7 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitSearchPage.dart';
 import 'package:irelandstatistics/widgets/GrandTotalWithMonth.dart';
 
-import '../../widgets/CompanyWorkPermitListView.dart';
+import '../../widgets/SubWorkPermitListView.dart';
 import '../../widgets/TopTitleText.dart';
 
 class WorkPermitCompanyPage extends StatefulWidget {
@@ -75,7 +75,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           slivers: <Widget>[
             SliverToBoxAdapter(child: grandTotal),
             const SliverToBoxAdapter(child: TopTitleText()),
-            CompanyWorkPermitListView(data)
+            SubWorkPermitListView<PermitsCompany>(data)
           ],
         );
       },

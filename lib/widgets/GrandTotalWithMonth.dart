@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
-import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 
 class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
   final E data;
@@ -24,10 +23,6 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
     if (data is PermitsCompany) {
       var tmp = data as PermitsCompany;
       count = tmp.count ?? 0;
-      year = tmp.year ?? year;
-    } else if (data is PermitsNationality) {
-      var tmp = data as PermitsNationality;
-      count = tmp.issued ?? 0;
       year = tmp.year ?? year;
     }
 
@@ -165,98 +160,86 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
         FlSpot(10, bean.monthCount![10].toDouble() / 1000.00),
         FlSpot(11, bean.monthCount![11].toDouble() / 1000.00)
       ];
-    } else if (bean is PermitsNationality) {
-      return [
-        FlSpot(0, bean.issued!.toDouble() / 1000.00),
-        FlSpot(1, bean.refused!.toDouble() / 1000.00),
-        FlSpot(2, bean.withdrawn!.toDouble() / 1000.00),
-      ];
     }
 
     return [];
   }
 
   Widget showMainData(E bean) {
-    if (bean is PermitsCompany) {
-      return LineChart(LineChartData(
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 1,
-          verticalInterval: 1,
-          getDrawingHorizontalLine: (value) {
-            return const FlLine(
-              color: Colors.deepPurpleAccent,
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return const FlLine(
-              color: Colors.deepPurpleAccent,
-              strokeWidth: 1,
-            );
-          },
+    return LineChart(LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: true,
+        horizontalInterval: 1,
+        verticalInterval: 1,
+        getDrawingHorizontalLine: (value) {
+          return const FlLine(
+            color: Colors.deepPurpleAccent,
+            strokeWidth: 1,
+          );
+        },
+        getDrawingVerticalLine: (value) {
+          return const FlLine(
+            color: Colors.deepPurpleAccent,
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
         ),
-        titlesData: FlTitlesData(
-          show: true,
-          rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 30,
-              interval: 1,
-              getTitlesWidget: bottomTitleWidgets,
-            ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              interval: 1,
-              getTitlesWidget: leftTitleWidgets,
-              reservedSize: 42,
-            ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1,
+            getTitlesWidget: bottomTitleWidgets,
           ),
         ),
-        borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: Colors.deepPurpleAccent),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            interval: 1,
+            getTitlesWidget: leftTitleWidgets,
+            reservedSize: 42,
+          ),
         ),
-        minX: 0,
-        maxX: 11,
-        minY: 0,
-        maxY: 5,
-        lineBarsData: [
-          LineChartBarData(
-            spots: getData(bean),
-            isCurved: true,
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border.all(color: Colors.deepPurpleAccent),
+      ),
+      minX: 0,
+      maxX: 11,
+      minY: 0,
+      maxY: 5,
+      lineBarsData: [
+        LineChartBarData(
+          spots: getData(bean),
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: gradientColors,
+          ),
+          barWidth: 4,
+          isStrokeCapRound: true,
+          dotData: const FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
             gradient: LinearGradient(
-              colors: gradientColors,
-            ),
-            barWidth: 4,
-            isStrokeCapRound: true,
-            dotData: const FlDotData(
-              show: false,
-            ),
-            belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(
-                colors: gradientColors
-                    .map((color) => color.withOpacity(0.3))
-                    .toList(),
-              ),
+              colors: gradientColors
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
             ),
           ),
-        ],
-      ));
-    } else if (data is PermitsNationality) {
-      return const Placeholder();
-    } else {
-      return const Placeholder();
-    }
+        ),
+      ],
+    ));
   }
 }

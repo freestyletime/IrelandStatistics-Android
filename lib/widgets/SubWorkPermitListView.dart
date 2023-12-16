@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
 
-class CompanyWorkPermitListView extends StatelessWidget {
-  final List<PermitsCompany> data;
+class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
+  final List<T> data;
 
-  const  CompanyWorkPermitListView(this.data, {super.key});
+  const  SubWorkPermitListView(this.data, {super.key});
 
-  Widget _basicInfo(PermitsCompany data) {
+  Widget _basicCompanyInfo(PermitsCompany data) {
     return Container(
         color: Colors.amberAccent,
         padding: const EdgeInsets.all(10),
@@ -32,7 +33,7 @@ class CompanyWorkPermitListView extends StatelessWidget {
             ]));
   }
 
-  Widget _monthCountInfo(PermitsCompany data) {
+  Widget _monthCountInfo(List<int> monthCount) {
     Widget getContent(String str) {
       const fixedHeight = 40.0;
       return Container(
@@ -54,48 +55,53 @@ class CompanyWorkPermitListView extends StatelessWidget {
       children: <TableRow>[
         TableRow(
           children: <Widget>[
-            getContent('Jan ${data.monthCount?[0]}'),
-            getContent('Feb ${data.monthCount?[1]}'),
-            getContent('Mar ${data.monthCount?[2]}'),
+            getContent('Jan ${monthCount[0]}'),
+            getContent('Feb ${monthCount[1]}'),
+            getContent('Mar ${monthCount[2]}'),
           ],
         ),
         TableRow(
           children: <Widget>[
-            getContent('Apr ${data.monthCount?[3]}'),
-            getContent('May ${data.monthCount?[4]}'),
-            getContent('Jun ${data.monthCount?[5]}'),
+            getContent('Apr ${monthCount[3]}'),
+            getContent('May ${monthCount[4]}'),
+            getContent('Jun ${monthCount[5]}'),
           ],
         ),
         TableRow(
           children: <Widget>[
-            getContent('Jul ${data.monthCount?[6]}'),
-            getContent('Aug ${data.monthCount?[7]}'),
-            getContent('Sep ${data.monthCount?[8]}'),
+            getContent('Jul ${monthCount[6]}'),
+            getContent('Aug ${monthCount[7]}'),
+            getContent('Sep ${monthCount[8]}'),
           ],
         ),
         TableRow(
           children: <Widget>[
-            getContent('Oct ${data.monthCount?[9]}'),
-            getContent('Nov ${data.monthCount?[10]}'),
-            getContent('Dec ${data.monthCount?[11]}'),
+            getContent('Oct ${monthCount[9]}'),
+            getContent('Nov ${monthCount[10]}'),
+            getContent('Dec ${monthCount[11]}'),
           ],
         ),
       ],
     );
   }
 
-  Widget _renderRow(int position, List<PermitsCompany> datas) {
-    PermitsCompany data = datas[position];
+  Widget _renderRow(int position, List<T> datas) {
+    
+    if(datas[position] is PermitsCompany) {
+      PermitsCompany data = datas[position] as PermitsCompany;
 
-    return Container(
-        padding: const EdgeInsets.all(5),
-        child: Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_basicInfo(data), _monthCountInfo(data)],
-          ),
-        ));
+      return Container(
+          padding: const EdgeInsets.all(5),
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [_basicCompanyInfo(data), _monthCountInfo(data.monthCount!)],
+            ),
+          ));
+    }
+    
+    return const Placeholder();
   }
 
   @override

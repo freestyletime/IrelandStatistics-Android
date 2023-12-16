@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/app_bar.dart';
-import 'package:flutter/src/material/floating_action_button.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
+import 'package:irelandstatistics/widgets/GrandTotalWithIssued.dart';
 
 import '../../Constants.dart';
-import '../../widgets/GrandTotalWithMonth.dart';
 import 'WorkPermitSearchWithoutPagingPage.dart';
 
 class WorkPermitNationalityPage extends StatefulWidget {
@@ -75,8 +73,7 @@ class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalit
 
   @override
   Widget getBody(BuildContext context) {
-    var grandTotal = GrandTotalWithMonth<PermitsNationality>(
-        data: widget.grandTotal, icon: Icons.work);
+    var grandTotal = GrandTotalWithIssued<PermitsNationality>(data: widget.grandTotal, icon: Icons.place);
 
     return ValueListenableBuilder<List<PermitsNationality>>(
       valueListenable: _data,
@@ -106,6 +103,11 @@ class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalit
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-    // TODO: implement success
+    if (WorkPermitNationalityPage.tag + hashCode.toString() == id) {
+      if (ts.isNotEmpty && ts[0] is PermitsNationality) {
+        _data.value.addAll(ts as Iterable<PermitsNationality>);
+        _data.notifyListeners();
+      }
+    }
   }
 }

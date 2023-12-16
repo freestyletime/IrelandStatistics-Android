@@ -4,7 +4,7 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 
 import '../../Constants.dart';
 import '../../models/workpermit/PermitsCompany.dart';
-import '../../widgets/CompanyWorkPermitListView.dart';
+import '../../widgets/SubWorkPermitListView.dart';
 import '../../widgets/SearchBox.dart';
 
 class WorkPermitSearchPage extends StatefulWidget {
@@ -90,7 +90,7 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
         ws.add(SliverToBoxAdapter(child: search));
 
         if (data.isNotEmpty) {
-          ws.add(CompanyWorkPermitListView(data as List<PermitsCompany>));
+          ws.add(SubWorkPermitListView<PermitsCompany>(data as List<PermitsCompany>));
         }
 
         return CustomScrollView(
