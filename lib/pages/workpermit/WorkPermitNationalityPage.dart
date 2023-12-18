@@ -6,6 +6,7 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/widgets/GrandTotalWithIssued.dart';
 
 import '../../Constants.dart';
+import '../../widgets/SubWorkPermitListView.dart';
 import 'WorkPermitSearchWithoutPagingPage.dart';
 
 class WorkPermitNationalityPage extends StatefulWidget {
@@ -14,14 +15,16 @@ class WorkPermitNationalityPage extends StatefulWidget {
   final int year;
   final PermitsNationality grandTotal;
 
-  const WorkPermitNationalityPage({super.key, required this.grandTotal, required this.year});
+  const WorkPermitNationalityPage(
+      {super.key, required this.grandTotal, required this.year});
 
   @override
-  State<WorkPermitNationalityPage> createState() => _WorkPermitNationalityPageState();
+  State<WorkPermitNationalityPage> createState() =>
+      _WorkPermitNationalityPageState();
 }
 
-class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalityPage> {
-
+class _WorkPermitNationalityPageState
+    extends BasePageState<WorkPermitNationalityPage> {
   var _isLoadMore = false;
   late ScrollController _scrollController;
 
@@ -29,12 +32,14 @@ class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalit
 
   void _dataRequest() {
     service.getApiWorkPermitNationality().getAllNationalityDataByYear(
-        WorkPermitNationalityPage.tag + hashCode.toString(), widget.year.toString());
+        WorkPermitNationalityPage.tag + hashCode.toString(),
+        widget.year.toString());
   }
 
   void _loadMore() {
-    if (!_isLoadMore && _scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (!_isLoadMore &&
+        _scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
       _isLoadMore = true;
       // TODO add the last item to show users the data is completed loaded.
     }
@@ -73,7 +78,8 @@ class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalit
 
   @override
   Widget getBody(BuildContext context) {
-    var grandTotal = GrandTotalWithIssued<PermitsNationality>(data: widget.grandTotal, icon: Icons.place);
+    var grandTotal = GrandTotalWithIssued<PermitsNationality>(
+        data: widget.grandTotal, icon: Icons.place_rounded);
 
     return ValueListenableBuilder<List<PermitsNationality>>(
       valueListenable: _data,
@@ -82,7 +88,7 @@ class _WorkPermitNationalityPageState extends BasePageState<WorkPermitNationalit
           physics: const ScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(child: grandTotal),
-
+            SubWorkPermitListView<PermitsNationality>(data)
           ],
         );
       },

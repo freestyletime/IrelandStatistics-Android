@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/models/IBean.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitCompanyPage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitNationalityPage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
@@ -46,6 +48,10 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
   void _result(String val) {
     switch (val) {
       case Strings.tag_work_permit_page_nationality:
+        service.getApiWorkPermitNationality().getNationalityDataByYear(
+            WorkPermitPage.tag + hashCode.toString(),
+            selectedYear.toString(),
+            Constants.field_grand_total);
         break;
       case Strings.tag_work_permit_page_companies:
         service.getApiWorkPermitCompany().getCompanyDataByYear(
@@ -172,6 +178,13 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
           CupertinoPageRoute(
               builder: (context) => WorkPermitCompanyPage(
                   grandTotal: ts[0] as PermitsCompany, year: selectedYear)),
+        );
+      } else if (ts.isNotEmpty && ts[0] is PermitsNationality) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => WorkPermitNationalityPage(
+                  grandTotal: ts[0] as PermitsNationality, year: selectedYear)),
         );
       }
     }

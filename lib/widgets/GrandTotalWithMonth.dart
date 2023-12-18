@@ -50,7 +50,7 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
               Icon(icon),
               const SizedBox(width: 10),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '${Constants.field_grand_total} - $year',

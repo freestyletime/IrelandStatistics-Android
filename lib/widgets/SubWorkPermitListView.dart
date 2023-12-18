@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 
 class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
   final List<T> data;
 
-  const  SubWorkPermitListView(this.data, {super.key});
+  const SubWorkPermitListView(this.data, {super.key});
 
   Widget _basicCompanyInfo(PermitsCompany data) {
     return Container(
@@ -20,16 +21,16 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    Text(data.employer ?? '',
-                        style:
+                        Text(data.employer ?? '',
+                            style:
                             const TextStyle(color: Colors.black, fontSize: 16)),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text('Total Permit(${data.year}): ${data.count ?? 0}',
-                        style: const TextStyle(
-                            color: Colors.deepPurpleAccent, fontSize: 14))
-                  ]))
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text('Total Permit(${data.year}): ${data.count ?? 0}',
+                            style: const TextStyle(
+                                color: Colors.deepPurpleAccent, fontSize: 14))
+                      ]))
             ]));
   }
 
@@ -85,22 +86,35 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
     );
   }
 
-  Widget _renderRow(int position, List<T> datas) {
-    
-    if(datas[position] is PermitsCompany) {
-      PermitsCompany data = datas[position] as PermitsCompany;
-
-      return Container(
-          padding: const EdgeInsets.all(5),
-          child: Card(
+  Widget _getUnitWrap(List<Widget> children) {
+    return Container(
+        padding: const EdgeInsets.all(5),
+        child: Card(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_basicCompanyInfo(data), _monthCountInfo(data.monthCount!)],
-            ),
-          ));
+              children: children,
+            )
+        ));
+  }
+
+  Widget _renderRow(int position, List<T> datas) {
+    if (datas[position] is PermitsCompany) {
+      PermitsCompany data = datas[position] as PermitsCompany;
+
+      return _getUnitWrap([
+        _basicCompanyInfo(data),
+        _monthCountInfo(data.monthCount!)
+      ]);
+
+    } else if (datas[position] is PermitsNationality) {
+      PermitsNationality data = datas[position] as PermitsNationality;
+
+      return _getUnitWrap([
+        //Todo
+      ]);
     }
-    
+
     return const Placeholder();
   }
 
@@ -108,7 +122,7 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-      return _renderRow(index, data);
-    }, childCount: data.length));
+          return _renderRow(index, data);
+        }, childCount: data.length));
   }
 }
