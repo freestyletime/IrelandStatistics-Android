@@ -108,7 +108,7 @@ class GrandTotalWithIssued<E extends IBean> extends StatelessWidget {
         enabled: false,
         touchTooltipData: BarTouchTooltipData(
           tooltipBgColor: Colors.black54,
-          tooltipPadding: const EdgeInsets.all(2),
+          tooltipPadding: const EdgeInsets.all(1),
           tooltipMargin: 5,
           getTooltipItem: (
             BarChartGroupData group,

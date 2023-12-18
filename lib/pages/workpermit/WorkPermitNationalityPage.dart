@@ -1,13 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/models/IBean.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:irelandstatistics/models/config/Country.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/widgets/GrandTotalWithIssued.dart';
 
 import '../../Constants.dart';
 import '../../widgets/SubWorkPermitListView.dart';
-import 'WorkPermitSearchWithoutPagingPage.dart';
 
 class WorkPermitNationalityPage extends StatefulWidget {
   static const String tag = 'work-permit-nationality-page';
@@ -25,6 +27,8 @@ class WorkPermitNationalityPage extends StatefulWidget {
 
 class _WorkPermitNationalityPageState
     extends BasePageState<WorkPermitNationalityPage> {
+
+  var _countries = <String, Country>{};
   var _isLoadMore = false;
   late ScrollController _scrollController;
 
@@ -45,9 +49,24 @@ class _WorkPermitNationalityPageState
     }
   }
 
-  @override
+  Future<void> _loadJsonAsset() async {
+    final String jsonString = await rootBundle.loadString('assets/config/countries.json');
+    List<dynamic> jsonData = jsonDecode(jsonString);
+    Map<String, Country> data = {};
+
+    for(var s in jsonData) {
+      var c = Country.fromJson(s);
+      data.putIfAbsent(c.enShortName ?? '', () => c);
+    }
+
+    setState(() {
+      _countries = data;
+    });
+  }
+
+    @override
   void initState() {
-    //widget.years![0];
+    _loadJsonAsset();
     _dataRequest();
     _scrollController = ScrollController()..addListener(_loadMore);
     super.initState();
@@ -58,21 +77,7 @@ class _WorkPermitNationalityPageState
     return AppBar(
       centerTitle: true,
       title: const Text(Strings.page_title_work_permit_nationality),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search),
-          tooltip: 'Search Nationality',
-          onPressed: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (context) => WorkPermitSearchWithoutPagingPage(
-                      type: Strings.tag_work_permit_page_nationality,
-                      year: widget.year)),
-            );
-          },
-        ),
-      ],
+
     );
   }
 
@@ -85,10 +90,11 @@ class _WorkPermitNationalityPageState
       valueListenable: _data,
       builder: (context, data, _) {
         return CustomScrollView(
+          controller: _scrollController,
           physics: const ScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(child: grandTotal),
-            SubWorkPermitListView<PermitsNationality>(data)
+            SubWorkPermitListView<PermitsNationality>(data: data, countries: _countries),
           ],
         );
       },

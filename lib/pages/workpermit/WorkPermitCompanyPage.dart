@@ -75,7 +75,7 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           slivers: <Widget>[
             SliverToBoxAdapter(child: grandTotal),
             const SliverToBoxAdapter(child: TopTitleText()),
-            SubWorkPermitListView<PermitsCompany>(data)
+            SubWorkPermitListView<PermitsCompany>(data: data)
           ],
         );
       },

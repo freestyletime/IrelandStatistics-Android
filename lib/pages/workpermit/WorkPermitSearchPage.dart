@@ -90,7 +90,7 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
         ws.add(SliverToBoxAdapter(child: search));
 
         if (data.isNotEmpty) {
-          ws.add(SubWorkPermitListView<PermitsCompany>(data as List<PermitsCompany>));
+          ws.add(SubWorkPermitListView<PermitsCompany>(data: data as List<PermitsCompany>));
         }
 
         return CustomScrollView(
