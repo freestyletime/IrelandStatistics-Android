@@ -60,7 +60,7 @@ class _WorkPermitNationalityPageState
   Future<void> _loadJsonAsset() async {
     final String jsonString = await rootBundle.loadString('assets/config/countries.json');
     List<dynamic> jsonData = jsonDecode(jsonString);
-    Map<String, Country> data = {};
+    var data = <String, Country>{};
 
     for(var s in jsonData) {
       var c = Country.fromJson(s);

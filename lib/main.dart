@@ -30,11 +30,6 @@ class ThemeCubit extends Cubit<ThemeData> {
       ),
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
-      // textTheme: const TextTheme(
-      //   bodySmall:  TextStyle(color: Colors.black),
-      //   bodyMedium:  TextStyle(color: Colors.black),
-      //   bodyLarge:  TextStyle(color: Colors.black),// Change the text color for headline1
-      // ),
   );
 
   static final _darkTheme = ThemeData(
@@ -43,11 +38,6 @@ class ThemeCubit extends Cubit<ThemeData> {
       ),
       brightness: Brightness.dark,
       scaffoldBackgroundColor: Colors.grey,
-    //   textTheme: const TextTheme(
-    //     bodySmall:  TextStyle(color: Colors.white70),
-    //     bodyMedium:  TextStyle(color: Colors.white70),
-    //     bodyLarge:  TextStyle(color: Colors.white70),// Change the text color for headline1
-    // ),
   );
 
   Brightness toggleTheme() {

@@ -9,7 +9,7 @@
 
 This project aims to demonstrate diverse statistics in Ireland on different end-clients.
 
-It employed [Dart](https://dart.dev/) && [Flutter][(https://flutter.dev/) as the basis to develop mobile applications running on Android & IOS.
+It employed [Dart](https://dart.dev/) && [Flutter](https://flutter.dev/) as the basis to develop mobile applications running on Android & IOS.
 APIs are empowered by the project [IrelandStatistics-Backend](https://github.com/freestyletime/IrelandStatistics-Backend).
 
 The purpose of this project is to demonstrate boring-and-drowsy data to users in a friendly way. (see screenshots)

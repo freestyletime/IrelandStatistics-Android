@@ -1,8 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/material/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
@@ -12,6 +10,7 @@ import '../Constants.dart';
 import '../main.dart';
 import '../models/config/Channel.dart';
 import '../widgets/EmptyCenterText.dart';
+import 'AboutPage.dart';
 
 class HomePage extends StatefulWidget {
   static const String tag = 'home-page';
@@ -46,7 +45,23 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   AppBar? getAppBar(BuildContext context) {
-    return AppBar(centerTitle: true, title: const Text(Strings.page_title_home));
+    return AppBar(
+        centerTitle: true,
+        title: const Text(Strings.page_title_home),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'About',
+            onPressed: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => AboutPage(theme: theme)),
+              );
+            },
+          ),
+        ],
+    );
   }
 
   @override
