@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/models/IBean.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitCompanyPage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitCountyPage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitNationalityPage.dart';
+import 'package:irelandstatistics/pages/workpermit/WorkPermitSectorPage.dart';
 import 'package:irelandstatistics/widgets/WorkPermitListView.dart';
 
 import '../../Constants.dart';
@@ -60,8 +64,16 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
             Constants.field_grand_total);
         break;
       case Strings.tag_work_permit_page_county:
+        service.getApiWorkPermitCounty().getCountyDataByYear(
+            WorkPermitPage.tag + hashCode.toString(),
+            selectedYear.toString(),
+            Constants.field_grand_total);
         break;
       case Strings.tag_work_permit_page_sector:
+        service.getApiWorkPermitSector().getSectorDataByYear(
+            WorkPermitPage.tag + hashCode.toString(),
+            selectedYear.toString(),
+            Constants.field_grand_total);
         break;
     }
   }
@@ -171,20 +183,34 @@ class _WorkPermitPageState extends BasePageState<WorkPermitPage> {
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-    if (WorkPermitPage.tag + hashCode.toString() == id) {
-      if (ts.isNotEmpty && ts[0] is PermitsCompany) {
+    if (WorkPermitPage.tag + hashCode.toString() == id && ts.isNotEmpty) {
+      if (ts[0] is PermitsCompany) {
         Navigator.push(
           context,
           CupertinoPageRoute(
               builder: (context) => WorkPermitCompanyPage(
                   grandTotal: ts[0] as PermitsCompany, year: selectedYear)),
         );
-      } else if (ts.isNotEmpty && ts[0] is PermitsNationality) {
+      } else if (ts[0] is PermitsNationality) {
         Navigator.push(
           context,
           CupertinoPageRoute(
               builder: (context) => WorkPermitNationalityPage(
                   grandTotal: ts[0] as PermitsNationality, year: selectedYear)),
+        );
+      } else if (ts[0] is PermitsSector) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => WorkPermitSectorPage(
+                  grandTotal: ts[0] as PermitsSector, year: selectedYear)),
+        );
+      } else if (ts[0] is PermitsCounty) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => WorkPermitCountyPage(
+                  grandTotal: ts[0] as PermitsCounty, year: selectedYear)),
         );
       }
     }

@@ -7,6 +7,7 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/pages/workpermit/WorkPermitSearchPage.dart';
 import 'package:irelandstatistics/widgets/GrandTotalWithMonth.dart';
 
+import '../../widgets/ListBottomItem.dart';
 import '../../widgets/SubWorkPermitListView.dart';
 import '../../widgets/TopTitleText.dart';
 
@@ -24,6 +25,8 @@ class WorkPermitCompanyPage extends StatefulWidget {
 }
 
 class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
+
+  final _orgData = <PermitsCompany>[];
   final _data = ValueNotifier<List<PermitsCompany>>([]);
 
   void _dataRequest() {
@@ -75,7 +78,8 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
           slivers: <Widget>[
             SliverToBoxAdapter(child: grandTotal),
             const SliverToBoxAdapter(child: TopTitleText()),
-            SubWorkPermitListView<PermitsCompany>(data: data)
+            SubWorkPermitListView<PermitsCompany>(data: data),
+            const SliverToBoxAdapter(child: ListBottomItem()),
           ],
         );
       },
@@ -91,8 +95,8 @@ class _WorkPermitCompanyPageState extends BasePageState<WorkPermitCompanyPage> {
   void success<E extends IBean>(String id, List<E> ts) {
     if (WorkPermitCompanyPage.tag + hashCode.toString() == id) {
       if (ts.isNotEmpty && ts[0] is PermitsCompany) {
-        _data.value.addAll(ts as Iterable<PermitsCompany>);
-        _data.notifyListeners();
+        _orgData.addAll(ts as Iterable<PermitsCompany>);
+        _data.value = _orgData;
       }
     }
   }

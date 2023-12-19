@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
 
 import '../Constants.dart';
@@ -31,9 +32,15 @@ class GrandTotalWithIssued<E extends IBean> extends StatelessWidget {
       refused = tmp.refused ?? 0;
       withdrawn = tmp.withdrawn ?? 0;
       year = tmp.year ?? year;
+    } else if (data is PermitsCounty) {
+      var tmp = data as PermitsCounty;
+      issued = tmp.issued ?? 0;
+      refused = tmp.refused ?? 0;
+      withdrawn = tmp.withdrawn ?? 0;
+      year = tmp.year ?? year;
     }
 
-    return Column(
+      return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(

@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:irelandstatistics/models/IBean.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:irelandstatistics/models/config/Country.dart';
-import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/pages/BasePage.dart';
 import 'package:irelandstatistics/widgets/GrandTotalWithIssued.dart';
 import 'package:irelandstatistics/widgets/ListBottomItem.dart';
@@ -13,41 +9,40 @@ import '../../Constants.dart';
 import '../../widgets/SearchBox.dart';
 import '../../widgets/SubWorkPermitListView.dart';
 
-class WorkPermitNationalityPage extends StatefulWidget {
-  static const String tag = 'work-permit-nationality-page';
+class WorkPermitCountyPage extends StatefulWidget {
+  static const String tag = 'work-permit-county-page';
 
   final int year;
-  final PermitsNationality grandTotal;
+  final PermitsCounty grandTotal;
 
-  const WorkPermitNationalityPage(
+  const WorkPermitCountyPage(
       {super.key, required this.grandTotal, required this.year});
 
   @override
-  State<WorkPermitNationalityPage> createState() =>
-      _WorkPermitNationalityPageState();
+  State<WorkPermitCountyPage> createState() =>
+      _WorkPermitCountyPageState();
 }
 
-class _WorkPermitNationalityPageState
-    extends BasePageState<WorkPermitNationalityPage> {
+class _WorkPermitCountyPageState
+    extends BasePageState<WorkPermitCountyPage> {
 
-  var _countries = <String, Country>{};
   late ScrollController _scrollController;
 
 
-  final _orgData = <PermitsNationality>[];
-  final _data = ValueNotifier<List<PermitsNationality>>([]);
+  final _orgData = <PermitsCounty>[];
+  final _data = ValueNotifier<List<PermitsCounty>>([]);
 
   void _dataRequest() {
-    service.getApiWorkPermitNationality().getAllNationalityDataByYear(
-        WorkPermitNationalityPage.tag + hashCode.toString(),
+    service.getApiWorkPermitCounty().getAllCountyDataByYear(
+        WorkPermitCountyPage.tag + hashCode.toString(),
         widget.year.toString());
   }
 
   void _searchCallback(String result) {
-    var tmpData = <PermitsNationality>[];
+    var tmpData = <PermitsCounty>[];
     if(result.isNotEmpty) {
       for(var p in _orgData) {
-        if(p.nationality != null && p.nationality!.contains(result)) {
+        if(p.county != null && p.county!.contains(result)) {
           tmpData.add(p);
         }
       }
@@ -57,24 +52,8 @@ class _WorkPermitNationalityPageState
     }
   }
 
-  Future<void> _loadJsonAsset() async {
-    final String jsonString = await rootBundle.loadString('assets/config/countries.json');
-    List<dynamic> jsonData = jsonDecode(jsonString);
-    Map<String, Country> data = {};
-
-    for(var s in jsonData) {
-      var c = Country.fromJson(s);
-      data.putIfAbsent(c.enShortName ?? '', () => c);
-    }
-
-    setState(() {
-      _countries = data;
-    });
-  }
-
-    @override
+  @override
   void initState() {
-    _loadJsonAsset();
     _dataRequest();
     _scrollController = ScrollController();
     super.initState();
@@ -84,21 +63,21 @@ class _WorkPermitNationalityPageState
   AppBar? getAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: const Text(Strings.page_title_work_permit_nationality),
+      title: const Text(Strings.page_title_work_permit_county),
     );
   }
 
   @override
   Widget getBody(BuildContext context) {
-    var grandTotal = GrandTotalWithIssued<PermitsNationality>(
+    var grandTotal = GrandTotalWithIssued<PermitsCounty>(
         data: widget.grandTotal, icon: Icons.place_rounded);
 
     var search = SearchBox(
-        hint: Strings.hint_nationality_work_permit_search,
+        hint: Strings.hint_county_work_permit_search,
         supportChangeCallback: false,
         callback: _searchCallback);
 
-    return ValueListenableBuilder<List<PermitsNationality>>(
+    return ValueListenableBuilder<List<PermitsCounty>>(
       valueListenable: _data,
       builder: (context, data, _) {
         return CustomScrollView(
@@ -107,7 +86,7 @@ class _WorkPermitNationalityPageState
           slivers: <Widget>[
             SliverToBoxAdapter(child: search),
             SliverToBoxAdapter(child: grandTotal),
-            SubWorkPermitListView<PermitsNationality>(data: data, countries: _countries),
+            SubWorkPermitListView<PermitsCounty>(data: data),
             const SliverToBoxAdapter(child: ListBottomItem()),
           ],
         );
@@ -129,9 +108,9 @@ class _WorkPermitNationalityPageState
 
   @override
   void success<E extends IBean>(String id, List<E> ts) {
-    if (WorkPermitNationalityPage.tag + hashCode.toString() == id) {
-      if (ts.isNotEmpty && ts[0] is PermitsNationality) {
-        _orgData.addAll(ts as Iterable<PermitsNationality>);
+    if (WorkPermitCountyPage.tag + hashCode.toString() == id) {
+      if (ts.isNotEmpty && ts[0] is PermitsCounty) {
+        _orgData.addAll(ts as Iterable<PermitsCounty>);
         _data.value = _orgData;
       }
     }

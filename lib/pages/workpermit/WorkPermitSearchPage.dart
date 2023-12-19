@@ -4,6 +4,7 @@ import 'package:irelandstatistics/pages/BasePage.dart';
 
 import '../../Constants.dart';
 import '../../models/workpermit/PermitsCompany.dart';
+import '../../widgets/ListBottomItem.dart';
 import '../../widgets/SubWorkPermitListView.dart';
 import '../../widgets/SearchBox.dart';
 
@@ -91,6 +92,7 @@ class _WorkPermitSearchPageState extends BasePageState<WorkPermitSearchPage> {
 
         if (data.isNotEmpty) {
           ws.add(SubWorkPermitListView<PermitsCompany>(data: data as List<PermitsCompany>));
+          ws.add(const SliverToBoxAdapter(child: ListBottomItem()));
         }
 
         return CustomScrollView(

@@ -3,7 +3,9 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/config/Country.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 
 class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
   final List<T> data;
@@ -42,11 +44,11 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
     var parser = EmojiParser();
     var title = '';
 
-    print(data.nationality);
     if (countries != null &&
         countries!.isNotEmpty &&
         countries!.containsKey(data.nationality)) {
-      var emoji = ':flag-${countries![data.nationality]?.alpha2Code?.toLowerCase()}:';
+      var emoji =
+          ':flag-${countries![data.nationality]?.alpha2Code?.toLowerCase()}:';
       title += '${parser.emojify(emoji)} ';
     } else {
       title += '${parser.emojify(':globe_with_meridians:')} ';
@@ -67,6 +69,59 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     Text(title,
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 16)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        'Total Issued Permit(${data.year}): ${data.issued ?? 0}',
+                        style: const TextStyle(
+                            color: Colors.deepPurpleAccent, fontSize: 14))
+                  ]))
+            ]));
+  }
+
+  Widget _basicSectorInfo(PermitsSector data) {
+    return Container(
+        color: Colors.amberAccent,
+        padding: const EdgeInsets.all(10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(data.sector ?? '',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 16)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Total Permit(${data.year}): ${data.count ?? 0}',
+                        style: const TextStyle(
+                            color: Colors.deepPurpleAccent, fontSize: 14))
+                  ]))
+            ]));
+  }
+
+  Widget _basicCountyInfo(PermitsCounty data) {
+    return Container(
+        color: Colors.amberAccent,
+        padding: const EdgeInsets.all(10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(data.county ?? '',
                         style:
                             const TextStyle(color: Colors.black, fontSize: 16)),
                     const SizedBox(
@@ -173,6 +228,19 @@ class SubWorkPermitListView<T extends IBean> extends StatelessWidget {
 
       return _getUnitWrap([
         _basicNationalityInfo(data),
+        _issuedCountInfo(
+            data.issued ?? 0, data.refused ?? 0, data.withdrawn ?? 0)
+      ]);
+    } else if (data[position] is PermitsSector) {
+      PermitsSector data = datas[position] as PermitsSector;
+
+      return _getUnitWrap(
+          [_basicSectorInfo(data), _monthCountInfo(data.monthCount!)]);
+    } else if (data[position] is PermitsCounty) {
+      PermitsCounty data = datas[position] as PermitsCounty;
+
+      return _getUnitWrap([
+        _basicCountyInfo(data),
         _issuedCountInfo(
             data.issued ?? 0, data.refused ?? 0, data.withdrawn ?? 0)
       ]);

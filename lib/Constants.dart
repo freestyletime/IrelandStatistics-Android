@@ -17,10 +17,16 @@ class Strings {
   static const String page_title_work_permit = 'Work Permit';
   static const String page_title_work_permit_company = 'Company Work Permit';
   static const String page_title_work_permit_nationality = 'Nationality Work Permit';
+  static const String page_title_work_permit_sector = 'Sector Work Permit';
+  static const String page_title_work_permit_county = 'County Work Permit';
 
   static const String hint_work_permit_search = 'Search your item';
   static const String hint_comapany_work_permit_search = 'Company Name';
+  static const String hint_nationality_work_permit_search = 'Nationality';
+  static const String hint_county_work_permit_search = 'County Name';
+  static const String hint_sector_work_permit_search = 'Secotr Name';
   static const String hint_data_empty = 'Out of data';
+  static const String hint_list_to_bottom = 'This is the bottom';
   static const String hint_year_select = 'Select the year you want to search for.';
 
   static const String msg_400 = 'Something wrong with the request parameters.';

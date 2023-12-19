@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/IBean.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCompany.dart';
+import 'package:irelandstatistics/models/workpermit/PermitsSector.dart';
 
 class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
   final E data;
@@ -22,6 +23,10 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
 
     if (data is PermitsCompany) {
       var tmp = data as PermitsCompany;
+      count = tmp.count ?? 0;
+      year = tmp.year ?? year;
+    } else if (data is PermitsSector) {
+      var tmp = data as PermitsSector;
       count = tmp.count ?? 0;
       year = tmp.year ?? year;
     }
@@ -144,28 +149,31 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  List<FlSpot> getData(E bean) {
-    if (bean is PermitsCompany) {
-      return [
-        FlSpot(0, bean.monthCount![0].toDouble() / 1000.00),
-        FlSpot(1, bean.monthCount![1].toDouble() / 1000.00),
-        FlSpot(2, bean.monthCount![2].toDouble() / 1000.00),
-        FlSpot(3, bean.monthCount![3].toDouble() / 1000.00),
-        FlSpot(4, bean.monthCount![4].toDouble() / 1000.00),
-        FlSpot(5, bean.monthCount![5].toDouble() / 1000.00),
-        FlSpot(6, bean.monthCount![6].toDouble() / 1000.00),
-        FlSpot(7, bean.monthCount![7].toDouble() / 1000.00),
-        FlSpot(8, bean.monthCount![8].toDouble() / 1000.00),
-        FlSpot(9, bean.monthCount![9].toDouble() / 1000.00),
-        FlSpot(10, bean.monthCount![10].toDouble() / 1000.00),
-        FlSpot(11, bean.monthCount![11].toDouble() / 1000.00)
-      ];
-    }
-
-    return [];
+  List<FlSpot> getData(List<int> monthCount) {
+    return [
+      FlSpot(0, monthCount[0].toDouble() / 1000.00),
+      FlSpot(1, monthCount[1].toDouble() / 1000.00),
+      FlSpot(2, monthCount[2].toDouble() / 1000.00),
+      FlSpot(3, monthCount[3].toDouble() / 1000.00),
+      FlSpot(4, monthCount[4].toDouble() / 1000.00),
+      FlSpot(5, monthCount[5].toDouble() / 1000.00),
+      FlSpot(6, monthCount[6].toDouble() / 1000.00),
+      FlSpot(7, monthCount[7].toDouble() / 1000.00),
+      FlSpot(8, monthCount[8].toDouble() / 1000.00),
+      FlSpot(9, monthCount[9].toDouble() / 1000.00),
+      FlSpot(10, monthCount[10].toDouble() / 1000.00),
+      FlSpot(11, monthCount[11].toDouble() / 1000.00)
+    ];
   }
 
   Widget showMainData(E bean) {
+    List<int> data = [];
+    if (bean is PermitsCompany) {
+      data = bean.monthCount!;
+    } else if (bean is PermitsSector) {
+      data = bean.monthCount!;
+    }
+
     return LineChart(LineChartData(
       gridData: FlGridData(
         show: true,
@@ -220,7 +228,7 @@ class GrandTotalWithMonth<E extends IBean> extends StatelessWidget {
       maxY: 5,
       lineBarsData: [
         LineChartBarData(
-          spots: getData(bean),
+          spots: getData(data),
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,
