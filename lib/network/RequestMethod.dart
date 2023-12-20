@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -26,8 +24,8 @@ class NetWork {
     dio.options = BaseOptions(
       baseUrl: URLConstants.workPermit,
       headers: headers,
-      receiveTimeout: const Duration(seconds: URLConstants.TIMEOUT),
-      sendTimeout: const Duration(seconds: URLConstants.TIMEOUT),
+      receiveTimeout: const Duration(seconds: URLConstants.receiveTimeout),
+      sendTimeout: const Duration(seconds: URLConstants.sendTimeout),
     );
 
     if (!kReleaseMode) {

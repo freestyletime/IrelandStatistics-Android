@@ -59,5 +59,6 @@ class URLConstants {
   static const String application = '$host/ireland_statistics';
   static const String workPermit = '$application/api/v1/employment-permit';
 
-  static const int TIMEOUT = 10; // 10s
+  static const int receiveTimeout = 5;
+  static const int sendTimeout = 5;
 }

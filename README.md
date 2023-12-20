@@ -49,6 +49,7 @@ The purpose of this project is to demonstrate boring-and-drowsy data to users in
 <img src='./screenshots/Screenshot_12.png' width=250>
 <img src='./screenshots/Screenshot_13.png' width=250>
 <img src='./screenshots/Screenshot_14.png' width=250>
+<img src='./screenshots/Screenshot_15.png' width=250>
 </div>
 
 
