@@ -66,13 +66,28 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   Widget getBody(BuildContext context) {
-    Widget getFunc(String? channelId) {
-      if (channelId == '0') {
+
+    void itemClick(Channel c){
+      switch (c.channelId) {
+        case Strings.tag_home_page_work_permit:
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => WorkPermitPage(
+                    data: c.subChannels,
+                    years: c.subChannelYears)),
+          );
+          break;
+      }
+    }
+
+    Widget getFunc(String? channelId, String channelName) {
+      if (channelId == Strings.tag_home_page_work_permit) {
         return Container(
           alignment: Alignment.center,
-          child: const Text('Employment permits',
-              style: TextStyle(
-                fontSize: 14,
+          child: Text(channelName,
+              style: const TextStyle(
+                fontSize: 16,
               )),
         );
       }
@@ -97,24 +112,12 @@ class _HomePageState extends BasePageState<HomePage> {
                       return Card(
                           elevation: 5.0,
                           child: InkWell(
-                          onTap: () {
-                            switch (c.channelId) {
-                              case Strings.tag_home_page_work_permit:
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => WorkPermitPage(
-                                          data: c.subChannels,
-                                          years: c.subChannelYears)),
-                                );
-                                break;
-                            }
-                          },
+                          onTap: () => itemClick(c),
                           child: Container(
                               color: theme == Brightness.light
                                   ? Colors.teal[100]
                                   : Colors.blueGrey,
-                              child: getFunc(c.channelId))));
+                              child: getFunc(c.channelId, c.channelName!))));
                     }).toList()))
           ]);
         });

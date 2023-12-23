@@ -1,4 +1,5 @@
 
+
 import 'package:irelandstatistics/Constants.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsCounty.dart';
 import 'package:irelandstatistics/models/workpermit/PermitsNationality.dart';
@@ -17,6 +18,7 @@ class API$WorkPermit$Config{
 
 class API$WorkPermit$Company{
   static const String united = '/company';
+
   getAllCompanyDataByYear(String id, String year, {int page = Constants.pageFrom, int pageSize = Constants.pageSize}) {
     String url = '$united/$year';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
@@ -27,6 +29,11 @@ class API$WorkPermit$Company{
     String url = '$united/$year/$company';
     Map<String, dynamic> data = {'page': page, 'pageSize': pageSize};
     NetWork.get(id, url, t: PermitsCompany(), data: data);
+  }
+
+  getCompanyData(String id, String company) {
+    String url = '$united/all/$company';
+    NetWork.get(id, url, t: PermitsCompany());
   }
 }
 
@@ -39,6 +46,11 @@ class API$WorkPermit$Nationality{
 
   getNationalityDataByYear(String id, String year, String nationality) {
     String url = '$united/$year/$nationality';
+    NetWork.get(id, url, t: PermitsNationality());
+  }
+
+  getNationalityData(String id, String nationality) {
+    String url = '$united/all/$nationality';
     NetWork.get(id, url, t: PermitsNationality());
   }
 }
@@ -54,6 +66,11 @@ class API$WorkPermit$County{
     String url = '$united/$year/$county';
     NetWork.get(id, url, t: PermitsCounty());
   }
+
+  getCountyData(String id, String county) {
+    String url = '$united/all/$county';
+    NetWork.get(id, url, t: PermitsCounty());
+  }
 }
 
 class API$WorkPermit$Sector{
@@ -65,6 +82,11 @@ class API$WorkPermit$Sector{
 
   getSectorDataByYear(String id, String year, String sector) {
     String url = '$united/$year/$sector';
+    NetWork.get(id, url, t: PermitsSector());
+  }
+
+  getSectorData(String id, String sector) {
+    String url = '$united/all/$sector';
     NetWork.get(id, url, t: PermitsSector());
   }
 }

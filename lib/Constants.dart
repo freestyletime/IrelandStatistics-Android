@@ -55,7 +55,7 @@ class Strings {
 }
 
 class URLConstants {
-  static const String host = 'http://141.148.240.29/';
+  static const String host = 'https://141.148.240.29/';
   static const String application = '$host/ireland_statistics';
   static const String workPermit = '$application/api/v1/employment-permit';
 
